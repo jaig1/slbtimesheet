@@ -1,0 +1,44 @@
+
+<div class="container">
+<div class="row"> 
+
+<div class="col-md-4">
+
+</div>
+
+
+
+<div class="col-md-4">
+<div class="logo-holder">
+
+<img class="center-block" src = "../images/logo_slb.jpg"/>
+</div>
+<div ng-controller="adduserController">
+<form>
+<div class="form-group">
+<input type="text" class="form-control" ng-model="user.username" value="user" placeholder="username">
+</div>
+<div class="form-group">
+<input type="password" class="form-control" ng-model="user.password" value="user" placholder="password">
+</div>
+<div class="form-group">
+<input type="text" class="form-control" ng-model="user.approver" value="sam" placeholder="approver">
+</div>
+<div class="form-group">
+<input type="checkbox" ng-model="user.isManager"> Is Manager ?
+</div>
+<button ng-click="signup()" class="btn btn-primary center-block">Add User</button>
+</form>
+<p ng-show="good">Add User Successfully</p>
+<p ng-show="bad">Could not add user</p>
+</div>
+</div>
+
+
+<div class="col-md-4">
+</div>
+
+</div>
+
+
+</div>

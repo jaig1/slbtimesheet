@@ -1,0 +1,151 @@
+
+<div class="dashboard" ng-controller="logoutController">
+<nav class="navbar ">
+
+
+<div class="container">
+
+<a class="navbar-brand" href="#" >
+<img class="" src = "../images/logo.jpg"/>
+</a>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="#" class="btn btn-link" ng-click="logout()">Logout</a></li>
+
+</ul>
+
+<div>
+
+</nav>
+
+
+<div class="dashboard-main" ng-controller="tsController">
+<div class="container">
+<div class="row">
+<div class="col-xs-4">
+<h4><span ng-bind="username"></span>'s TimeSheet</h4>
+</div>
+
+<div class="col-xs-4"  >
+
+<div ng-show="isManager">
+
+<h4>To Approve: <span class="label label-danger btn" ng-click="moveState('approve')"><span ng-bind="pendingTS" class="white-color"></span></span></h4>
+
+</div>
+
+
+</div>
+<div class="col-xs-4">
+
+<div class="h4 pull-right">
+	Status:<span ng-bind="timesheet.status" ng-attr-class="{{ (timesheet.status=='submitted') ? 'text-success':'text-warning'}}" ></span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="timesheet-holder panel panel-primary">
+
+<div class="ts-months-holder panel-heading">
+
+<ul class="list list-inline">
+
+<li><button class="btn btn-link white-color" data-month="10" ng-click="tsChooseMonth($event)">Oct 2016</button> </li>
+<li><button class="btn btn-link white-color" data-month="09" ng-click="tsChooseMonth($event)">Sep 2016</button> </li>
+
+</ul>
+
+</div> <!-- ts-months-holder 7204331918 -->
+
+<div class="panel-body">
+<div class="row">
+
+<div class="col-xs-2">
+<div id="weeksMenu" ></div>
+</div>
+
+<div class="col-xs-10">
+
+<div id="table-holder">
+
+</div>
+
+<div> <!--def holder-->
+
+
+<div>
+
+<style>
+
+
+
+
+
+
+</style>
+<form>
+<div class="table-responsive">
+<table  class="table table-bordered ">
+
+<tr ng-repeat="project in timesheet.projects">
+
+	<td>
+	<table class="table table-tasks">
+	<tr ng-attr-class="{{ ($index == 0) ? '':'hidden' }}"><th style="min-width:30px;">Project</th><th>Task</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th><!--<th>Totals</th> --></tr>
+	<thead>
+	</thead>
+	<tr ng-repeat="t in project.tasks" >
+		
+		<td ng-if="$index==0" rowspan="2" class="vertical-center " ng-model="t.projectname" style="min-width:70px;">{{project.name}}</td>
+		
+		<td><input type="text" size="20" ng-model="t.name" ng-disabled="{{ (timesheet.status =='submitted' || timesheet.status =='approved') ? 'true':'false'}}"/></td>
+		<td><input type="text" size="2"  ng-model="t.monHours" ng-disabled="{{ (timesheet.status =='submitted'|| timesheet.status =='approved') ? 'true':'false'}}"/></td>
+		<td><input type="text" size="2"  ng-model="t.tueHours" ng-disabled="{{ (timesheet.status =='submitted'|| timesheet.status =='approved') ? 'true':'false'}}"/></td>
+		<td><input type="text" size="2"  ng-model="t.wedHours" ng-disabled="{{ (timesheet.status =='submitted'|| timesheet.status =='approved') ? 'true':'false'}}"/></td>
+		<td><input type="text" size="2"  ng-model="t.thuHours" ng-disabled="{{ (timesheet.status =='submitted'|| timesheet.status =='approved') ? 'true':'false'}}"/></td>
+		<td><input type="text" size="2"  ng-model="t.friHours" ng-disabled="{{ (timesheet.status =='submitted'|| timesheet.status =='approved') ? 'true':'false'}}"/></td>
+		<td><input type="text" size="2"  ng-model="t.satHours" ng-disabled="{{ (timesheet.status =='submitted'|| timesheet.status =='approved') ? 'true':'false'}}"/></td>
+		<td><input type="text" size="2"  ng-model="t.sunHours" ng-disabled="{{ (timesheet.status =='submitted'|| timesheet.status =='approved') ? 'true':'false'}}"/></td>
+		<!--<td><input type="text" size="2"  ng-disabled="true" ng-value="{{Number(t.monHours)+Number(t.tueHours)}}"/></td> -->
+		</tr>
+		</table>
+	</td>	
+	
+</tr>
+
+
+
+</table>
+</div>
+</form>
+</div><!-- content-holder-->
+<div class="pull-right" ng-hide="timesheet.status=='approved'">
+<button class="btn btn-default" ng-click="tsSave()" ng-hide="timesheet.status=='submitted'">Save</button> 
+<button class="btn btn-danger" ng-click="tsCancel()" ng-show="timesheet.status=='submitted'">Cancel</button>
+<button class="btn btn-primary" ng-click="tsSubmit()" ng-hide="timesheet.status=='submitted'">Submit</button>
+</div>
+
+</div>
+
+</div><!--row- <td><input type="text" size="4"  ng-value="{{(t.monHours > 0) ? t.monHours : ''}}"/></td>
+		<td><input type="text" size="4"  ng-value="{{(t.tueHours > 0) ? t.tueHours : ''}}"/></td>
+		<td><input type="text" size="4"  ng-value="{{(t.wedHours > 0) ? t.wedHours : ''}}"/></td>
+		<td><input type="text" size="4"  ng-value="{{(t.thuHours > 0) ? t.thuHours : ''}}"/></td>
+		<td><input type="text" size="4"  ng-value="{{(t.friHours > 0) ? t.friHours : ''}}"/></td>
+		<td><input type="text" size="4"  ng-value="{{(t.satHours > 0) ? t.satHours : ''}}"/></td>
+		<td><input type="text" size="4"  ng-value="{{(t.sunHours > 0) ? t.sunHours : ''}}"/></td>->
+
+</div>
+
+</div> <!--panel-->
+
+
+</div>
+
+</div> <!-- dashboard-main -->
+
+</div> <!-- dashboard -->
+
+
