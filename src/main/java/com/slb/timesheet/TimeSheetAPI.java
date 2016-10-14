@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
-import com.google.api.server.spi.config.ApiNamespace;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Result;
 import com.slb.timesheet.model.OfyService;
@@ -29,8 +28,8 @@ import com.slb.timesheet.Constants;
 
 // [START header]
 /** An endpoint class we are exposing */
-@Api(name = "Timesheet", version = "v1", scopes = { Constants.EMAIL_SCOPE }, clientIds = {
-		Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID }, description = "API for SLB Time Sheet Application.")
+@Api(name = "timesheet", version = "v2", scopes = { Constants.EMAIL_SCOPE }, clientIds = {
+		Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID }, description = "API for the SLB Timesheet application.")
 // [END header]
 
 public class TimeSheetAPI {
