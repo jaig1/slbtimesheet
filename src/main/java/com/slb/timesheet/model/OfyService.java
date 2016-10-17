@@ -8,6 +8,9 @@ public class OfyService {
 	
 	static {
         ObjectifyService.register(UserModel.class);
+        ObjectifyService.register(TimesheetModel.class);
+        ObjectifyService.register(ProjectModel.class);
+        ObjectifyService.register(TaskModel.class);
     }
 
     public static Objectify ofy() {

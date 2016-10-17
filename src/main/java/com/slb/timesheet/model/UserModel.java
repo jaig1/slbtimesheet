@@ -1,13 +1,16 @@
 package com.slb.timesheet.model;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 //import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class UserModel {
 	//@Id Long id;
 	@Id  private String username;
+	@Index
 	private String approver;
+	@Index
 	private Boolean isManager;
 	private String password;
 	public String getUsername() {
