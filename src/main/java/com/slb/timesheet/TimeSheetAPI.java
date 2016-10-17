@@ -14,17 +14,23 @@
 
 package com.slb.timesheet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiNamespace;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Result;
 import com.slb.timesheet.model.OfyService;
+import com.slb.timesheet.model.ProjectModel;
+import com.slb.timesheet.model.TaskModel;
+import com.slb.timesheet.model.TimesheetModel;
 import com.slb.timesheet.model.UserModel;
 import com.slb.timesheet.Constants;
-
 
 // [START header]
 /** An endpoint class we are exposing */
@@ -103,8 +109,11 @@ public AuthenticationResponse authenticate(AuthenticateRequest authenticateReque
   {
 	 
 	  TimeSheetResponse response=new TimeSheetResponse();
-	  Timesheet resp=new Timesheet();
-	  resp.setStatus("saved");
+	  TimesheetModel resp=new TimesheetModel();
+	  System.out.println("week*****"+week);
+	  resp= OfyService.ofy().load().type(TimesheetModel.class).filter("year", year).filter("month", month).filter("weekno",week).first().now();
+	  
+	  /*resp.setStatus("saved");
 	  resp.setMonth(month);
 	  resp.setYear(year);
 	  resp.setWeekno(week);
@@ -115,7 +124,14 @@ public AuthenticationResponse authenticate(AuthenticateRequest authenticateReque
 	  //String projects[]={"abc","def"};
 	 // resp.setProjects(projects);
 	  resp.setWeekstartdatestring("26-Sep-2016");
-	  resp.setWeekenddatestring("02-Oct-2016");
+	  resp.setWeekenddatestring("02-Oct-2016");*/
+	  /*if(resp==null)
+	  {
+		  response.setSuccess(false);
+		  response.setMsg("No Timesheet present");
+		  return response;
+	  } */
+			  
 	  response.setSuccess(true);
 	  response.setTs(resp);
 	  
@@ -130,22 +146,67 @@ public AuthenticationResponse authenticate(AuthenticateRequest authenticateReque
 	  )
 public TimeSheetResponse savetimesheet(TimeSheetRequest timesheetReq,HttpServletRequest req)
 {
-	Timesheet timesheet=timesheetReq.getTimesheet();
+	
 	 TimeSheetResponse response=new TimeSheetResponse();
 	  String userName=null;
 	  if(req.getHeader("Authorization")!=null)
 	  {
 		  userName=req.getHeader("Authorization").trim();
 	  }
-	  System.out.println("Month"+timesheet.getMonth());
-	  System.out.println("Size "+timesheet.getProjects().size());
-	  Timesheet savedTimeSheet=new Timesheet();
-	  savedTimeSheet.setStatus("saved");
+	 
+	  if(timesheetReq==null)
+	  {
+		  response.setSuccess(true);
+		  response.setMsg("No Timesheet provided to save");
+		  return response;
+	  }
+	  else if (timesheetReq.getTimesheet()==null)
+	  {
+		  response.setSuccess(true);
+		  response.setMsg("No Timesheet provided to save");
+		  return response;
+	  }
+	  Timesheet timesheet=timesheetReq.getTimesheet();
+	  //Finding the existing timesheet
+	  TimesheetModel resp= OfyService.ofy().load().type(TimesheetModel.class).filter("year", timesheet.getYear()).filter("month", timesheet.getMonth()).filter("weekno",timesheet.getWeekno()).filter("username",userName).first().now();
+	  if(resp!=null)
+	  {
+		  OfyService.ofy().delete().entity(resp).now();
+	  }
+	  
+	  TimesheetModel savedTimeSheet=new TimesheetModel();
+	  savedTimeSheet.setStatus(timesheet.getStatus());
 	  savedTimeSheet.setMonth(timesheet.getMonth());
 	  savedTimeSheet.setYear(timesheet.getYear());
 	  savedTimeSheet.setWeekno(timesheet.getWeekno());
 	  savedTimeSheet.setUsername(userName);
+	  savedTimeSheet.setWeekenddatestring(timesheet.getWeekenddatestring());
+	  savedTimeSheet.setWeekstartdatestring(timesheet.getWeekstartdatestring());
+	  List<Project> projects=timesheet.getProjects();
+	  List<ProjectModel> projectModels=new ArrayList();
+	  for (Project project : projects) {
+		ProjectModel projectModel=new ProjectModel();
+		projectModel.setName(project.getName());
+		List<Task> tasks = project.getTasks();
+		List<TaskModel> taskModels=new ArrayList<>();
+		for (Task task : tasks) {
+			TaskModel taskModel=new TaskModel();
+			taskModel.setName(task.getName());
+			taskModel.setMonHours(task.getMonHours());
+			taskModel.setTueHours(task.getTueHours());
+			taskModel.setWedHours(task.getWedHours());
+			taskModel.setThuHours(task.getThuHours());
+			taskModel.setFriHours(task.getFriHours());
+			taskModel.setSatHours(task.getSatHours());
+			taskModel.setSunHours(task.getSunHours());
+			taskModels.add(taskModel);
+		}
+		projectModel.setTasks(taskModels);
+		projectModels.add(projectModel);
+	}
 	  
+	  savedTimeSheet.setProjects(projectModels);
+	  OfyService.ofy().save().entity(savedTimeSheet).now();
 	  response.setTs(savedTimeSheet);
 	  response.setMsg("Timesheet saved successfully");
 	  response.setSuccess(true);
@@ -153,4 +214,90 @@ public TimeSheetResponse savetimesheet(TimeSheetRequest timesheetReq,HttpServlet
 	  return response;
 }
  
+@ApiMethod(
+	      name = "getPendingTS",
+	      path="getPendingTS",
+	      httpMethod = ApiMethod.HttpMethod.GET)
+
+public PendingTSResponse getPendingTS(HttpServletRequest req)         
+{
+	 String userName=null;
+	 String userNames[] = new String[5]; 
+	 PendingTSResponse response=new PendingTSResponse();
+	  if(req.getHeader("Authorization")!=null)
+	  {
+		  userName=req.getHeader("Authorization").trim();
+		  Result<UserModel> result=OfyService.ofy().load().key(Key.create(UserModel.class,userName));
+		  UserModel user = result.now(); 
+		  if(user!=null&&!user.getIsManager())
+		  {
+			  response.setMsg("User is not a Manager");
+			  response.setSuccess(false);
+		  }
+		  else if(user==null)
+		  {
+			  response.setMsg("Authentication failed. User not found.");
+			  response.setSuccess(false); 
+		  }
+	  }
+	List<UserModel> userModels =OfyService.ofy().load().type(UserModel.class).filter("approver", userName).list();
+	int i=0;
+	for (UserModel userModel : userModels) {
+		userNames[i++]=userModel.getUsername();
+	}
+	  
+	String[] statuses = new String[]{"submitted", "rejected"};
+	 List<TimesheetModel> timesheetModels= OfyService.ofy().load().type(TimesheetModel.class).filter("status IN", statuses).filter("username IN",userNames).list(); //.filter("status IN", statuses).filter("username IN",userNames)
+	 response.setSuccess(true);
+	 response.setTimesheets(timesheetModels);
+	  return response;
+}
+
+@ApiMethod(
+	      name = "approveorreject",
+	      path="approveorreject",
+	      httpMethod = ApiMethod.HttpMethod.POST
+	  )
+public TimeSheetResponse approveorreject(TimeSheetRequest timesheetReq,HttpServletRequest req)
+{
+	
+	 TimeSheetResponse response=new TimeSheetResponse();
+	  String userName=null;
+	  if(req.getHeader("Authorization")!=null)
+	  {
+		  userName=req.getHeader("Authorization").trim();
+	  }
+	 
+	  if(timesheetReq==null)
+	  {
+		  response.setSuccess(true);
+		  response.setMsg("No Timesheet provided to save");
+		  return response;
+	  }
+	  else if (timesheetReq.getTimesheet()==null)
+	  {
+		  response.setSuccess(true);
+		  response.setMsg("No Timesheet provided to save");
+		  return response;
+	  }
+	  Timesheet timesheet=timesheetReq.getTimesheet();
+	  //Finding the existing timesheet
+	  TimesheetModel resp= OfyService.ofy().load().type(TimesheetModel.class).filter("year", timesheet.getYear()).filter("month", timesheet.getMonth()).filter("weekno",timesheet.getWeekno()).filter("username",timesheet.getUsername()).first().now();
+	  if(resp!=null)
+	  {
+		  OfyService.ofy().delete().entity(resp).now();
+	  }
+	 // System.out.println("resp"+resp);
+	 // TimesheetModel savedTimeSheet=new TimesheetModel();
+	  resp.setStatus(timesheet.getStatus());
+	  
+	  OfyService.ofy().save().entity(resp).now();
+	  response.setTs(resp);
+	  response.setMsg("Timesheet saved successfully");
+	  response.setSuccess(true);
+	  
+	  return response;
+}
+
+
 }

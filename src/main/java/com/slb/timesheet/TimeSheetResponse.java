@@ -1,9 +1,11 @@
 package com.slb.timesheet;
 
+import com.slb.timesheet.model.TimesheetModel;
+
 public class TimeSheetResponse {
 	
 	private boolean success;
-	private Timesheet ts;
+	private TimesheetModel ts;
 	private String msg;
 	
 	public boolean isSuccess() {
@@ -12,10 +14,11 @@ public class TimeSheetResponse {
 	public void setSuccess(boolean success) {
 		this.success = success;
 	}
-	public Timesheet getTs() {
+	
+	public TimesheetModel getTs() {
 		return ts;
 	}
-	public void setTs(Timesheet ts) {
+	public void setTs(TimesheetModel ts) {
 		this.ts = ts;
 	}
 	public String getMsg() {
