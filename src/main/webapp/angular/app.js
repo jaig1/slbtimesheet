@@ -3,7 +3,7 @@ slbApp.constant("AUTH_EVENTS", {
 	notAuthenticated: 'auth-not-authenticated'
 })
 slbApp.constant('API_ENDPOINT', {
-  url: 'http://localhost:8080/_ah/api/myApi/v1'
+  url: 'https://slbtimesheet.appspot.com/_ah/api/timesheet/v2'
 });
 slbApp.service('AuthService', function($q, $http, API_ENDPOINT) {
   var LOCAL_TOKEN_KEY = 'yourTokenKey';
