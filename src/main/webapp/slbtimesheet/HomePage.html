@@ -1,0 +1,170 @@
+<div>
+
+
+<div class="well bghead">
+    <img src="images/logo_schlumberger.gif" alt=""/> <span class="timesheet">| <span style="padding-left: 10px;">TimeSheet Dashboard</span></span>
+<span class="welcome"> Welcome,  <label ng-model="welcomeUserMsg" >{{welcomeUserMsg}}</label> <a href="#/login">Logout</a></span>
+</div>
+
+  
+
+<div class="dash_div">
+     <div style="float:right; margin-top: -11px;" ng-show="enableButtons">
+        Pending for Approval :
+        <a ng-click="approver()" style="cursor: pointer; text-decoration: none; font-weight: bold; align-content: ">Approve/Reject</a>
+     </div>
+     <br/>
+<input id="exampleInput" type="week"  name="input" ng-model="example.value"
+required ng-change="date()" />
+
+<h4 class="apprv">Approver: <input id="Approverid" class="app_in" type="text" name="input" ng-model="managerName" style="color:black;" readonly="true"/></h4>
+
+<div class="wrap">
+<table class="head">
+<tr style="background-color:highlight;height: 40px;">
+    
+<th style="width:15%; padding-left: 5px;" class="font"><h6 style="color:#335cb7;"><a ng-click="show()">
+<span class="glyphicon glyphicon-filter"></span></a>&nbsp;Project Code</h6></th>
+<th style="width:8%" class="font"><h6 style="color:#335cb7;">Tasks</h6></th>
+<th style="width:20%" class="font"><h6 style="color:#335cb7;">Tasks Description</h6></th>
+<th style="width:4%" class="font"><h6 ng-init="date()" ng-model="StartDate">{{StartDate |  date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="SecondDate">{{SecondDate |  date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="ThirdDate">{{ThirdDate | date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="fourthDate">{{fourthDate | date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="fifthDate">{{fifthDate | date:'EEE &nbsp &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="sixDate">{{sixDate | date:'EEE &nbsp &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="EndDate">{{EndDate | date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 style="color:#335cb7;">Weeks &nbsp; &nbsp; Total</h6></th>
+</tr>
+</table>
+<div class="inner_table">
+<table>
+
+<tr  ng-repeat="pc in projectCode | selected" style="font-size:12px" ng-init="rowIndex = $index">
+<td style="z-index:-1;width:15%; padding-left: 5px;">
+    <button style="width:13px;height:20px;text-align:center;padding-left:2px;padding-bottom:5px;padding-top:0px;" class="hover_ex" ng-if="pc.expanded" ng-click="pc.expanded = false">+</button>
+    <button style="width:13px;height:20px;text-align:center;padding-left:2px;padding-bottom:5px;padding-top:0px;" class="hover_ex" ng-if="!pc.expanded" ng-click="pc.expanded = true">-</button>
+    {{pc.projectcodes}}
+
+</td>
+
+<ul  ng-show="visible" style="list-style: none;position:absolute;background-color:lightgrey;padding-left:0px;width:130px" ng-model="visible">
+    <li ng-repeat="pc in projectCode"><input type="checkbox" ng-checked="pc.checked" ng-model="pc.checked" />{{pc.projectcodes}}</li>
+    <li>
+        <input type="submit" value="Cancel" ng-click="hide()" />
+    </li>
+</ul>
+
+<td style="width:8%">
+    <table>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks">
+            <th></th>
+            <td style="">{{t.code}}</td>
+        </tr>
+    </table>
+</td>
+<td style="width:20%">
+    <table>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks">
+            <th></th>
+            <td style="">{{t.description}}</td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%">
+    <table>
+        <th></th>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks" ng-init="columnIndex = $index">
+            <td style=""><input type="text" id="Mon_{{rowIndex}}_{{columnIndex}}" ng-model-onblur ng-change="ChangeValue(1,projectCode.length,7,rowIndex,columnIndex)" class="textClass" ng-model="Mon_" />
+        </tr>
+    </table>
+</td>
+<td style="width:4%">
+    <table>
+        <th></th>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks" ng-init="columnIndex = $index">
+            <td style=""><input type="text" id="Tue_{{rowIndex}}_{{columnIndex}}" ng-model-onblur ng-change="ChangeValue(2,projectCode.length,7,rowIndex,columnIndex)" class="textClass" ng-model="Tue_"/>
+        </tr>
+    </table>
+</td>
+<td style="width:4%">
+    <table>
+        <th></th>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks" ng-init="columnIndex = $index">
+            <td style=""><input type="text" id="Wed_{{rowIndex}}_{{columnIndex}}" ng-model-onblur ng-change="ChangeValue(3,projectCode.length,7,rowIndex,columnIndex)" class="textClass" ng-model="Wed_"/>
+        </tr>
+    </table>
+</td>
+<td style="width:4%">
+    <table>
+        <th></th>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks" ng-init="columnIndex = $index">
+            <td style=""><input type="text" id="Thu_{{rowIndex}}_{{columnIndex}}" ng-model-onblur ng-change="ChangeValue(4,projectCode.length,7,rowIndex,columnIndex)" class="textClass" ng-model="Thu_"/>
+        </tr>
+    </table>
+</td>
+<td style="width:4%">
+    <table>
+        <th></th>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks" ng-init="columnIndex = $index">
+            <td style=""><input type="text" id="Fri_{{rowIndex}}_{{columnIndex}}" ng-model-onblur ng-change="ChangeValue(5,projectCode.length,7,rowIndex,columnIndex)" class="textClass" ng-model="Fri_" />
+        </tr>
+    </table>
+</td>
+<td style="width:4%">
+    <table>
+        <th></th>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks" ng-init="columnIndex = $index">
+            <td style=""><input type="text" id="Sat_{{rowIndex}}_{{columnIndex}}" ng-model-onblur ng-change="ChangeValue(6,projectCode.length,7,rowIndex,columnIndex)" class="textClass" ng-model="Sat_" />
+        </tr>
+    </table>
+</td>
+<td style="width:4%">
+    <table>
+        <th></th>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks" ng-init="columnIndex = $index">
+            <td style=""><input type="text" id="Sun_{{rowIndex}}_{{columnIndex}}" ng-model-onblur ng-change="ChangeValue(7,projectCode.length,7,rowIndex,columnIndex)" ng-model="Sun_" class="textClass"/>
+        </tr>
+    </table>
+</td>
+<td style="width:4%">
+    <table>
+        <th></th>
+        <tr ng-if="!pc.expanded" ng-repeat="t in pc.tasks" ng-init="columnIndex = $index">
+            <td style=""><input type="text" id="week_{{rowIndex}}_{{columnIndex}}" class="textClass"/>
+        </tr>
+    </table>
+</td>
+</tr>
+</table>
+</div>
+<table style="border-bottom: 1px solid #dedede;">
+<th style="width:15%;"></th>
+<th style="width:8%;"></th>
+<th style="color:#335cb7;width:20%"><h6>Total</h6></th>
+<th style="width:4%;"><h6 ><input class="textClass" type="text" ng-model="MonValue" /></h6>
+<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="TueValue" /></h6>
+<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="WedValue"/></h6>
+<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="ThuValue" /></h6>
+<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="FriValue"/></h6>
+<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="SatValue"/></h6>
+<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="SunValue"/></h6>
+<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="MonValue + TueValue + WedValue + ThuValue + FriValue + SatValue + SunValue" /></h6>
+</table>
+
+</div>
+<table style="width: 25%; margin-top: 10px;" >
+          
+           <tr>
+               <td>Submitter Comments</td>
+               <td style="padding-left: 10px;"><textarea name="txtDescEd" cols="20" rows="3" /></td>
+           </tr>
+       </table>  
+<div style="text-align: left;padding-top: 20px;">
+        <button type="submit" class="btn_style" ng-click="saveAllValues()">Save</button>
+        <button style="margin-left: 25px;" type="submit" class="btn_style" ng-click="saveAllValues()">Submit</button>
+    </td>
+
+</div>
+
+</div>

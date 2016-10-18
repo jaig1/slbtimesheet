@@ -1,0 +1,194 @@
+<div ng-controller="ApproverController"> 
+<div ng-init="onLoad()">
+
+<div>
+<div class="well bghead">
+    <img src="images/logo_schlumberger.gif" alt=""/> <span class="timesheet">| <span style="padding-left: 10px;">TimeSheet Dashboard</span></span>
+<span class="welcome"> Welcome,  <label ng-model="welcomeUserMsg" >{{welcomeUserMsg}}</label> <a href="#/login">Logout</a></span>
+</div>
+</div>
+<div class="dash_div">
+<input id="exampleInput" type="week"  name="input" ng-model="example.value"
+required ng-change="date()" />
+<div class="wrap">
+<table class="head">
+<tr style="background-color:highlight;height: 40px;">
+
+<th style="width:15%; padding-left: 5px;" class="font"><h6 style="color:#335cb7;">
+&nbsp;Project Code</h6></th>
+<th style="width:8%" class="font"><h6 style="color:#335cb7;">Tasks</h6></th>
+<th style="width:20%" class="font"><h6 style="color:#335cb7;">Tasks Description</h6></th>
+<th style="width:4%" class="font"><h6 ng-init="date()" ng-model="StartDate">{{StartDate |  date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="SecondDate">{{SecondDate |  date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="ThirdDate">{{ThirdDate | date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="fourthDate">{{fourthDate | date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="fifthDate">{{fifthDate | date:'EEE &nbsp &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="sixDate">{{sixDate | date:'EEE &nbsp &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 ng-model="EndDate">{{EndDate | date:'EEE &nbsp &nbsp dd&nbsp;MMM'}}</h6></th>
+<th style="width:4%" class="font"><h6 style="color:#335cb7;">Weeks &nbsp; &nbsp; Total</h6></th>
+</tr>
+</table>
+<div class="inner_table">
+<table>
+
+<tr  ng-repeat="pc in projectCode" style="font-size:12px">
+<td style="z-index:-1;width:15%; padding-left: 5px;">
+    {{pc.projectcodes}}
+</td>
+
+<td style="width:8%;">
+    <table>
+        <tr ng-repeat="t in pc.tasks">
+            <th></th>
+            <td style="">{{t.code}}</td>
+        </tr>
+    </table>
+</td>
+<td style="width:20%;">
+    <table>
+        <tr ng-repeat="t in pc.tasks">
+            <th></th>
+            <td style="">{{t.description}}</td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%;">
+    <table>
+       
+        <tr ng-repeat="t in pc.tasks">
+             <th></th>
+            <td style="">
+           <!-- <label> {{  t.value.split(';')[0]==="" ? '-' : t.value.split(';')[0] }}</label>-->
+                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[0]" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%;">
+    <table>
+      
+        <tr ng-repeat="t in pc.tasks">
+              <th></th>
+            <td>
+                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[1]" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%;">
+    <table>
+        
+        <tr ng-repeat="t in pc.tasks">
+            <th></th>
+            <td>
+                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[2]" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%;">
+    <table>
+       
+        <tr ng-repeat="t in pc.tasks">
+             <th></th>
+            <td>
+                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[3]" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%;">
+    <table>
+       
+        <tr ng-repeat="t in pc.tasks">
+             <th></th>
+            <td>
+                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[4]" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%;">
+    <table>
+      
+        <tr ng-repeat="t in pc.tasks">
+              <th></th>
+            <td>
+                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[5]" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%;">
+    <table>
+       
+        <tr ng-repeat="t in pc.tasks">
+             <th></th>
+            <td>
+                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[6]" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</td>
+<td style="width:4%;">
+    <table>
+        
+        <tr ng-repeat="t in pc.tasks">
+            <th></th>
+            <td>
+               <!-- <label>{{ totalRow(t.value) }}</label>-->
+                <input class="textClassDetail" type="text" ng-model="totalRow(t.value)" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</td>
+</tr>
+</table>
+</div>
+<table style="border-bottom: 1px solid #dedede;">
+<tr ng-init="finalRows(projectCode)">
+<th style="width:15%;"></th>
+<th style="width:8%;"></th>
+<th style="color:#335cb7;width:20%"><h6>Total</h6></th>
+<th style="width:4%;"><h6 ><input class="textClassDetail" type="text" ng-model="finalRow[0]" readonly="true"/></h6>
+<th style="width:4%;"><h6><input class="textClassDetail" type="text" ng-model="finalRow[1]" readonly="true"/></h6>
+<th style="width:4%;"><h6><input class="textClassDetail" type="text" ng-model="finalRow[2]" readonly="true"/></h6>
+<th style="width:4%;"><h6><input class="textClassDetail" type="text" ng-model="finalRow[3]" readonly="true"/></h6>
+<th style="width:4%;"><h6><input class="textClassDetail" type="text" ng-model="finalRow[4]" readonly="true"/></h6>
+<th style="width:4%;"><h6><input class="textClassDetail" type="text" ng-model="finalRow[5]" readonly="true"/></h6>
+<th style="width:4%;"><h6><input class="textClassDetail" type="text" ng-model="finalRow[6]" readonly="true"/></h6>
+<th style="width:4%;"><h6><input class="textClassDetail" type="text" ng-model="finalSum" readonly="true"/></h6>
+</tr></table>
+
+</div>
+
+
+
+
+<div>
+<table style="width: 25%; margin-top: 10px;" >
+          <tr>
+<td >  Submitter Comments  </td>
+<td style="padding-left: 10px;"> NA </td>
+</tr>
+         <tr>
+<td>Approver Comments</td>
+<td style="padding-left: 10px;"><textarea name="txtDescEd" cols="20" rows="3" /></td>
+</tr>
+       </table>  
+ 
+
+<table style="margin-top: 10px;text-align: center">
+<tr>
+    <td colspan="2"> 
+<button type="submit" class="btn_style" ng-click="approve()">Approve</button>
+<button type="submit" style="margin-left: 25px;"  class="btn_style" ng-click="reject()">Reject</button>
+<button type="submit" style="margin-left: 25px;"  class="btn_style" ng-click="back()">Back</button>
+    </td>
+ 
+</tr>
+</table>
+
+</div>
+</div>
+</div>

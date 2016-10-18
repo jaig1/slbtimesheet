@@ -1,0 +1,172 @@
+body{
+ font-family: Arial, Helvetica, sans-serif;
+ font-size: 12px;
+}
+input{
+ 
+ font-size: 12px !important;
+}
+.font{
+    font-size: 9px !important;
+    color: #335cb7 !important
+}
+.dash_div{
+ width: 95%;
+ margin: 0 auto !important;
+}
+.btn_style{
+    background-color: #003366 !important;
+    color: #ffffff;
+    font-family: arial;
+    font-size: 12px;
+    width: 80px;
+    padding: 5px;
+}
+.btn_div{
+    text-align: center; 
+    padding-top: 20px;
+}
+a,
+a label {
+    cursor: pointer;
+    text-decoration: none;
+}
+.login{
+    margin-top: 120px !important;
+}
+button:hover{
+    color: #ffffff !important;
+    background-color: #001266 !important;
+}
+button.hover_ex:hover{
+    background-color: #f1f1f1 !important;
+    color: #010101 !important;
+}
+.bghead{
+    background-color:#003366 !important;
+    width:100%; 
+    padding: 10px;
+    border-radius: 3px;
+    margin-bottom: 40px;
+}
+.timesheet{
+    color:#ffffff;
+    }
+.welcome{
+    float:right;
+    color:#ffffff;
+    margin-top: 24px;
+    padding-right: 22px;
+}
+span.welcome a{
+    color:#ffffff;
+   
+}
+.bgfoot{
+    font-size: 10px;
+    background-color:#003366 !important;
+    width:100%; 
+    padding: 5px;
+    padding-left: 28px;
+    color:#ffffff;
+    position : absolute;
+    bottom : 0;
+    margin-top : 40px;
+}
+.exampleInput{
+    margin-top:50px;
+    margin-right:500px;
+    width:190px;
+}
+.apprv{
+   float:right; 
+   color:#010101;
+   font-size:13px ;
+   margin-top: 3px;
+}
+.app_in{
+    
+   color: #337ab7 !important;
+   border: none;
+   text-align: right;
+}
+.headth{
+       color:#335cb7;
+       margin-top:-30px;
+       margin-bottom:1px;
+       
+}
+.expand{
+    list-style: none;
+    position:absolute;
+    margin-top:90px;
+    background-color:lightgrey;
+    padding-left:0px;
+    width:130px
+}
+.textClassDetail{
+width:44px;
+height:20px;
+border: 0px;
+background-color: lightgray;
+text-align: center;  
+}
+.textClass {
+width:44px;
+height:20px;
+}
+
+
+
+tfoot td { padding:5px; }
+
+
+
+.wrap {
+    width: 100%;
+}
+
+.wrap table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+table tr td {
+     padding: 5px 0px;
+    text-align: left;
+    width:100%;
+}
+
+table.head tr td {
+    background: #eee;
+}
+
+.inner_table {
+    height: 225px;
+    overflow-y: overlay;
+ }
+ @media all and (-ms-high-contrast:none){
+   .inner_table {  
+    overflow-y: scroll;
+    margin-right: -16px;
+    }
+ }
+tr.ng-scope td table{
+    width: 100%;
+}
+div.inner_table > table > tbody > tr:nth-child(even){
+    background-color:#f1f1f1;
+}
+div.inner_table > table > tbody > tr{
+    border-bottom: 1px solid #dedede;
+}
+.head{
+    margin-top: 12px;
+}
+
+
+
+
+
+
+

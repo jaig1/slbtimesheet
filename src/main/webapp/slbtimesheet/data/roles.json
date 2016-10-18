@@ -1,0 +1,32 @@
+[    
+{
+    "username": "emp1",
+    "employeeId":"emp1@infosys.com",
+    "password": "emp1",
+    "role": "employee"
+},
+{
+    "username": "emp2",
+    "employeeId":"emp2@infosys.com",
+    "password": "emp2",
+    "role": "employee"
+},
+{
+    "username": "manager",
+    "employeeId":"manager@infosys.com",
+    "password": "manager",
+    "role": "manager"
+},
+{
+    "username": "emp3",
+    "employeeId":"emp3@infosys.com",
+    "password": "emp3",
+    "role": "employee"
+},
+{
+    "username": "manager1",
+    "employeeId":"manager1@infosys.com",
+    "password": "manager1",
+    "role": "manager"
+}
+]

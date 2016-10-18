@@ -1,0 +1,16 @@
+[{
+    "name": "user 1", "accessAs":"User", "userID":"user1", "password":"user"
+},
+{
+    "name": "user 2", "accessAs":"Manager", "userID":"user2", "password":"Manager"
+},
+{
+    "name": "user 3", "accessAs":"User", "userID":"user3", "password":"user"
+},
+{
+    "name": "user 4", "accessAs":"User", "userID":"user4", "password":"user"
+},
+{
+    "name": "user 5", "accessAs":"Manager", "userID":"user4", "password":"Manager"
+}
+]

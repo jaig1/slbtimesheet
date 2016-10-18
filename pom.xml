@@ -138,6 +138,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                 <version>${appengine.plugin.version}</version>
                 <configuration>
                     <enableJarClasses>false</enableJarClasses>
+					<!-- <jvmFlags>
+						<jvmFlag>-Dhttp.proxyHost=localhost</jvmFlag>
+						<jvmFlag>-Dhttp.proxyPort=3130</jvmFlag>
+						<jvmFlag>-Dhttps.proxyHost=localhost</jvmFlag>
+						<jvmFlag>-Dhttps.proxyPort=3130</jvmFlag>
+					</jvmFlags>
+					-->
+                    
                     <!-- Comment in the below snippet to bind to all IPs instead of just localhost -->
                     <!-- address>0.0.0.0</address>
                     <port>8080</port -->
