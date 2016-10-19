@@ -149,7 +149,8 @@ required ng-change="date()" />
 <th style="width:4%;"><h6><input class="textClass" type="text" ng-model="FriValue"/></h6>
 <th style="width:4%;"><h6><input class="textClass" type="text" ng-model="SatValue"/></h6>
 <th style="width:4%;"><h6><input class="textClass" type="text" ng-model="SunValue"/></h6>
-<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="MonValue + TueValue + WedValue + ThuValue + FriValue + SatValue + SunValue" /></h6>
+<!--<th style="width:4%;"><h6><input class="textClass" type="text" ng-model="MonValue + TueValue + WedValue + ThuValue + FriValue + SatValue + SunValue" /></h6>-->
+<th style="width:4%;"><h6><input class="textClass" type="text"/></h6>
 </table>
 
 </div>
@@ -162,7 +163,7 @@ required ng-change="date()" />
        </table>  
 <div style="text-align: left;padding-top: 20px;">
         <button type="submit" class="btn_style" ng-click="saveAllValues()">Save</button>
-        <button style="margin-left: 25px;" type="submit" class="btn_style" ng-click="saveAllValues()">Submit</button>
+        <button style="margin-left: 25px;" type="submit" class="btn_style" ng-click="gettimesheetdata()">Submit</button>
     </td>
 
 </div>
