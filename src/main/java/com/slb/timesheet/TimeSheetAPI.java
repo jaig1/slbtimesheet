@@ -111,7 +111,12 @@ public AuthenticationResponse authenticate(AuthenticateRequest authenticateReque
 	  TimeSheetResponse response=new TimeSheetResponse();
 	  TimesheetModel resp=new TimesheetModel();
 	  System.out.println("week*****"+week);
-	  resp= OfyService.ofy().load().type(TimesheetModel.class).filter("year", year).filter("month", month).filter("weekno",week).first().now();
+	  String userName=null;
+	  if(req.getHeader("Authorization")!=null)
+	  {
+		  userName=req.getHeader("Authorization").trim();
+	  }
+	  resp= OfyService.ofy().load().type(TimesheetModel.class).filter("year", year).filter("month", month).filter("weekno",week).filter("username",userName).first().now();
 	  
 	  /*resp.setStatus("saved");
 	  resp.setMonth(month);
