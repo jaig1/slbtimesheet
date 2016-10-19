@@ -5,8 +5,8 @@ app.constant("AUTH_EVENTS", {
   notAuthenticated : 'auth-not-authenticated'
 })
 app.constant('API_ENDPOINT', {
-  // url: 'https://slbtimesheet.appspot.com/_ah/api/timesheet/v2'
-  url : 'http://localhost:8080/_ah/api/timesheet/v2'
+  url: 'https://slbtimesheet.appspot.com/_ah/api/timesheet/v2'
+  // url : 'http://localhost:8080/_ah/api/timesheet/v2'
 });
 app.service('AuthService', function($q, $http, API_ENDPOINT) {
   var LOCAL_TOKEN_KEY = 'yourTokenKey';
@@ -206,7 +206,7 @@ app.controller('LoginController', [
           }
         });
       };
-
+      $scope.user = [];
       $scope.validate = function(username, pwd) {
         $scope.user = {
           username : username,
@@ -318,7 +318,8 @@ app
                 value : new Date()
               };
 
-              $scope.date = function() {
+              $scope.date = function () {
+
                 $scope.weeksArray = [];
                 // $scope.value = new Date();
                 $scope.i = 0;
@@ -376,6 +377,7 @@ app
                       'EEE dd MMM')
                       + ' - ' + $filter('date')(new Date(yy6), 'EEE dd MMM'));
                 }
+
               };
               $scope.show = function() {
                 $scope.visible = true;
@@ -430,39 +432,137 @@ app
 
               };
               $scope.weekTot = "MonValue + TueValue + WedValue + ThuValue + FriValue + SatValue + SunValue";
-              $scope.saveAllValues = function() {
-                var abc = $scope.ReturnTotalScopeValues();
-                console.log(abc);
-              };
 
-              $scope.ReturnTotalScopeValues = function() {
-                var inputElements = [ 'input#Mon_', 'input#Tue_', 'input#Wed_',
-                    'input#Thu_', 'input#Fri_', 'input#Sat_', 'input#Sun_' ];
-                angular.forEach($scope.projectCode, function(pc, key1) {
-                  angular.forEach(pc.tasks, function(tsk, key) {
-                    var weekValues = "";
-                    angular.forEach(inputElements, function(ele) {
-                      var elements = $document.find(ele + key1 + '_' + key);
-                      if (elements.length > 0 && elements[0].value !== "") {
-                        weekValues = weekValues + parseFloat(elements[0].value)
-                            + ";";
-                        var aHHMM = elements[0].value.split(":");
+              //$scope.timeSheetJSON; //RP
+              $scope.projectsData = [];
+              $scope.prjtasksData = [];
+              $scope.projectsData1 = [];
 
-                        var nMinutes = 0;
-                        nMinutes = aHHMM[0] * 60;
-                        nMinutes += Number(aHHMM[1]);
-                        minTot = minTot + nMinutes;
-                        var nHours = Math.floor(minTot / 60);
-                        var nMinutes = minTot % 60;
-                        weekValues = nHours + ":" + nMinutes;
-                      } else {
-                        weekValues = weekValues + ";";
+              $scope.saveAllValues = function () {
+                  //var abc = $scope.ReturnTotalScopeValues();
+                  //console.log(abc);
+                  //RP
+                  if ($scope.projectCode.length > 0) {
+                      $scope.projectsData1 = [];
+
+                      for (var i = 0; i < $scope.projectCode.length; i++) {
+                          //$scope.projectsData.push({ name: $scope.projectCode[i].projectcodes });
+                          //$scope.projectsData1.push(JSON.parse(JSON.stringify({ name: $scope.projectCode[i].projectcodes })));
+                          $scope.prjtasksData = [];
+                          for (var j = 0; j < $scope.projectCode[i].tasks.length; j++) {
+                              
+                              var mon = "#Mon_" + i + "_" + j;
+                              if ((angular.element(mon).val() == "") || (!(angular.element(mon).val())))
+                                  mon = 0;
+                              else
+                                  mon = angular.element(mon).val();
+
+                              var tue = "#Tue_" + i + "_" + j;
+                              if ((angular.element(tue).val() == "") || (!(angular.element(tue).val())))
+                                  tue = 0;
+                              else
+                                  tue = angular.element(tue).val();
+
+                              var wed = "#Wed_" + i + "_" + j;
+                              if ((angular.element(wed).val() == "") || (!(angular.element(wed).val())))
+                                  wed = 0;
+                              else
+                                  wed = angular.element(wed).val();
+
+                              var thu = "#Thu_" + i + "_" + j;
+                              if ((angular.element(thu).val() == "") || (!(angular.element(thu).val())))
+                                  thu = 0;
+                              else
+                                  thu = angular.element(thu).val();
+
+                              var fri = "#Fri_" + i + "_" + j;
+                              if ((angular.element(fri).val() == "") || (!(angular.element(fri).val())))
+                                  fri = 0;
+                              else
+                                  fri = angular.element(fri).val();
+
+                              var sat = "#Sat_" + i + "_" + j;
+                              if ((angular.element(sat).val() == "") || (!(angular.element(sat).val())))
+                                  sat = 0;
+                              else
+                                  sat = angular.element(sat).val();
+
+                              var sun = "#Sun_" + i + "_" + j;
+                              if ((angular.element(sun).val() == "") || (!(angular.element(sun).val())))
+                                  sun = 0;
+                              else
+                                  sun = angular.element(sun).val();
+
+                              $scope.prjtasksData.push({
+                                  name: $scope.projectCode[i].tasks[j].description,
+                                  monHours: mon,
+                                  tueHours: tue,
+                                  wedHours: wed,
+                                  thuHours: thu,
+                                  friHours: fri,
+                                  satHours: sat,
+                                  sunHours: sun
+                              });
+                          } //tasks
+
+                          $scope.projectsData1.push(JSON.parse(JSON.stringify({
+                              name: $scope.projectCode[i].projectcodes,
+                              tasks: $scope.prjtasksData
+                          })));
+
+
                       }
-                    });
-                    tsk.value = weekValues;
+
+
+                      //$scope.projectsData.push(JSON.parse(JSON.stringify($scope.cC)));
+
+                      $scope.timeSheetJSON = {
+                          timesheet: {
+                              username: $scope.welcomeUserMsg,
+                              weekno: exampleInput.value.split("-W")[1],
+                              month: $scope.example.value.getMonth() + 1,
+                              year: exampleInput.value.split("-W")[0],
+                              status: "submitted",
+                              projects: $scope.projectsData1
+                          }
+                      };
+                  }
+                  //saveTimeSheet(JSON.stringify($scope.timeSheetJSON));
+                  AuthService.saveTimeSheet(JSON.stringify($scope.timeSheetJSON)).then(function (msg) {
+
+                      console.log(msg);
                   });
-                });
-                return $scope.projectCode;
+                  //RP
+                
+              };
+              var minTot;
+              $scope.ReturnTotalScopeValues = function () {
+                  var inputElements = ['input#Mon_', 'input#Tue_', 'input#Wed_', 'input#Thu_', 'input#Fri_', 'input#Sat_', 'input#Sun_'];
+                  angular.forEach($scope.projectCode, function (pc, key1) {
+                      angular.forEach(pc.tasks, function (tsk, key) {
+                          var weekValues = "";
+                          angular.forEach(inputElements, function (ele) {
+                              var elements = $document.find(ele + key1 + '_' + key);
+                              if (elements.length > 0 && elements[0].value !== "") {
+                                  weekValues = weekValues + parseFloat(elements[0].value)
+                                      + ";";
+                                  var aHHMM = elements[0].value.split(":");
+
+                                  var nMinutes = 0;
+                                  nMinutes = aHHMM[0] * 60;
+                                  nMinutes += Number(aHHMM[1]);
+                                  minTot = minTot + nMinutes;
+                                  var nHours = Math.floor(minTot / 60);
+                                  var nMinutes = minTot % 60;
+                                  weekValues = nHours + ":" + nMinutes;
+                              } else {
+                                  weekValues = weekValues + ";";
+                              }
+                          });
+                          tsk.value = weekValues;
+                      });
+                  });
+                  return $scope.projectCode;
               };
 
               $scope.ReturnScopeValues = function(elementName, row, col) {
@@ -518,7 +618,6 @@ app
                       returnValue = nHours + ":" + nMinutes;
                     }
                   }
-
                 });
 
                 return returnValue;
