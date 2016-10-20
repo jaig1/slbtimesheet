@@ -6,7 +6,7 @@ app.constant("AUTH_EVENTS", {
 })
 app.constant('API_ENDPOINT', {
   url: 'https://slbtimesheet.appspot.com/_ah/api/timesheet/v2'
-  // url : 'http://localhost:8080/_ah/api/timesheet/v2'
+  //url : 'http://localhost:8080/_ah/api/timesheet/v2'
 });
 app.service('AuthService', function($q, $http, API_ENDPOINT) {
   var LOCAL_TOKEN_KEY = 'yourTokenKey';
@@ -81,30 +81,33 @@ app.service('AuthService', function($q, $http, API_ENDPOINT) {
     });
   }
 
-  var getTimeSheet = function(query) {
-    return $q(function(resolve, reject) {
-      $http.get(API_ENDPOINT.url + '/getTimeSheet?' + query).then(
-          function(result) {
-            if (result.data.success) {
-              resolve(result.data.timesheet);
-            } else {
-              reject(result.data.msg);
-            }
-          });
-    });
+  var getTimeSheet = function (week, month, year) {
+      //https://slbtimesheet.appspot.com/_ah/api/timesheet/v2/getTimeSheet?month=10&week=43&year=2016
+      var query = "month=" + month + "&week=" + week + "&year=" + year;
+      return $q(function (resolve, reject) {
+          $http.get(API_ENDPOINT.url + '/getTimeSheet?' + query).then(
+              function (result) {
+                  if (result.data.success) {
+                      //resolve(result.data.timesheet);                      
+                      resolve(result.data.ts);
+                  } else {                      
+                      reject(result.data.msg);
+                  }
+              });
+      });
   }
 
-  var getPendingTS = function() {
-    return $q(function(resolve, reject) {
-      $http.get(API_ENDPOINT.url + '/getPendingTS').then(function(result) {
+  var getPendingTS = function () {
+      return $q(function (resolve, reject) {
+          $http.get(API_ENDPOINT.url + '/getPendingTS').then(function (result) {
 
-        if (result.data.success) {
-          resolve(result.data);
-        } else {
-          reject(result.data.msg);
-        }
+              if (result.data.success) {
+                  resolve(result.data);
+              } else {
+                  reject(result.data.msg);
+              }
+          });
       });
-    });
 
   }
 
@@ -280,45 +283,256 @@ app
 
               $scope.visible = false;
 
-              $scope.projectCode = [ {
-                projectcodes : "ProjectCode1",
-                tasks : [ {
-                  code : "task1",
-                  description : "ADM Configuration"
-                }, {
-                  code : "task2",
-                  description : "Defect prevention Activities"
-                } ],
-              }, {
-                projectcodes : "ProjectCode2",
-                tasks : [ {
-                  code : "task1",
-                  description : "ADM Configuration"
-                } ]
-              }, {
-                projectcodes : "ProjectCode3",
-                tasks : [ {
-                  code : "task1",
-                  description : "ADM Configuration"
-                }, {
-                  code : "task2",
-                  description : "Defect prevention Activities"
-                } ]
-              }, {
-                projectcodes : "ProjectCode4",
-                tasks : [ {
-                  code : "task1",
-                  description : "ADM Configuration"
-                }, {
-                  code : "task2",
-                  description : "Defect prevention Activities"
-                } ]
-              } ];
+              $scope.currDefaultUserTimesheet = [{
+                      username: "",
+                      weekno: "",
+                      month: 0,
+                      year: "",
+                      status: "",
+                      projects: [
+                         {
+                             name: "ProjectCode1",
+                             tasks: [
+                                {
+                                    name: "Task1",
+                                    description: "ADM Configuration",
+                                    monHours: "0:00",
+                                    tueHours: "0:00",
+                                    wedHours: "0:00",
+                                    thuHours: "0:00",
+                                    friHours: "0:00",
+                                    satHours: "0:00",
+                                    sunHours: "0:00"
+                                },
+                                {
+                                    name: "Task2",
+                                    description: "Defect prevention Activities",
+                                    monHours: "0:00",
+                                    tueHours: "0:00",
+                                    wedHours: "0:00",
+                                    thuHours: "0:00",
+                                    friHours: "0:00",
+                                    satHours: "0:00",
+                                    sunHours: "0:00"
+                                }
+                             ]
+                         },
+                         {
+                             name: "ProjectCode2",
+                             tasks: [
+                                {
+                                    name: "Task1",
+                                    description: "ADM Configuration",
+                                    monHours: "0:00",
+                                    tueHours: "0:00",
+                                    wedHours: "0:00",
+                                    thuHours: "0:00",
+                                    friHours: "0:00",
+                                    satHours: "0:00",
+                                    sunHours: "0:00"
+                                }
+                             ]
+                         },
+                         {
+                             name: "ProjectCode3",
+                             tasks: [
+                                {
+                                    name: "Task1",
+                                    description: "ADM Configuration",
+                                    monHours: "0:00",
+                                    tueHours: "0:00",
+                                    wedHours: "0:00",
+                                    thuHours: "0:00",
+                                    friHours: "0:00",
+                                    satHours: "0:00",
+                                    sunHours: "0:00"
+                                },
+                                {
+                                    name: "Task2",
+                                    description: "Defect prevention Activities",
+                                    monHours: "0:00",
+                                    tueHours: "0:00",
+                                    wedHours: "0:00",
+                                    thuHours: "0:00",
+                                    friHours: "0:00",
+                                    satHours: "0:00",
+                                    sunHours: "0:00"
+                                }
+                             ]
+                         },
+                         {
+                             name: "ProjectCode4",
+                             tasks: [
+                                {
+                                    name: "Task1",
+                                    description: "ADM Configuration",
+                                    monHours: "0:00",
+                                    tueHours: "0:00",
+                                    wedHours: "0:00",
+                                    thuHours: "0:00",
+                                    friHours: "0:00",
+                                    satHours: "0:00",
+                                    sunHours: "0:00"
+                                },
+                                {
+                                    name: "Task2",
+                                    description: "Defect prevention Activities",
+                                    monHours: "0:00",
+                                    tueHours: "0:00",
+                                    wedHours: "0:00",
+                                    thuHours: "0:00",
+                                    friHours: "0:00",
+                                    satHours: "0:00",
+                                    sunHours: "0:00"
+                                }
+                             ]
+                         }
+                      ]                  
+              }];
+
+              //$scope.currDefaultUserTimesheet = [{
+              //    "timesheet": {
+              //        "username": "ramani_pandiyan@infosys.com",
+              //        "weekno": "43",
+              //        "month": 10,
+              //        "year": "2016",
+              //        "status": "submitted",
+              //        "projects": [
+              //           {
+              //               "name": "ProjectCode1",
+              //               "tasks": [
+              //                  {
+              //                      "name": "ADM Configuration",
+              //                      "monHours": "0:00",
+              //                      "tueHours": "0:00",
+              //                      "wedHours": "0:00",
+              //                      "thuHours": "0:00",
+              //                      "friHours": "0:00",
+              //                      "satHours": "0:00",
+              //                      "sunHours": "0:00"
+              //                  },
+              //                  {
+              //                      "name": "Defect prevention Activities",
+              //                      "monHours": "0:00",
+              //                      "tueHours": "0:00",
+              //                      "wedHours": "0:00",
+              //                      "thuHours": "0:00",
+              //                      "friHours": "0:00",
+              //                      "satHours": "0:00",
+              //                      "sunHours": "0:00"
+              //                  }
+              //               ]
+              //           },
+              //           {
+              //               "name": "ProjectCode2",
+              //               "tasks": [
+              //                  {
+              //                      "name": "ADM Configuration",
+              //                      "monHours": "0:00",
+              //                      "tueHours": "0:00",
+              //                      "wedHours": "0:00",
+              //                      "thuHours": "0:00",
+              //                      "friHours": "0:00",
+              //                      "satHours": "0:00",
+              //                      "sunHours": "0:00"
+              //                  }
+              //               ]
+              //           },
+              //           {
+              //               "name": "ProjectCode3",
+              //               "tasks": [
+              //                  {
+              //                      "name": "ADM Configuration",
+              //                      "monHours": "0:00",
+              //                      "tueHours": "0:00",
+              //                      "wedHours": "0:00",
+              //                      "thuHours": "0:00",
+              //                      "friHours": "0:00",
+              //                      "satHours": "0:00",
+              //                      "sunHours": "0:00"
+              //                  },
+              //                  {
+              //                      "name": "Defect prevention Activities",
+              //                      "monHours": "0:00",
+              //                      "tueHours": "0:00",
+              //                      "wedHours": "0:00",
+              //                      "thuHours": "0:00",
+              //                      "friHours": "0:00",
+              //                      "satHours": "0:00",
+              //                      "sunHours": "0:00"
+              //                  }
+              //               ]
+              //           },
+              //           {
+              //               "name": "ProjectCode4",
+              //               "tasks": [
+              //                  {
+              //                      "name": "ADM Configuration",
+              //                      "monHours": "0:00",
+              //                      "tueHours": "0:00",
+              //                      "wedHours": "0:00",
+              //                      "thuHours": "0:00",
+              //                      "friHours": "0:00",
+              //                      "satHours": "0:00",
+              //                      "sunHours": "0:00"
+              //                  },
+              //                  {
+              //                      "name": "Defect prevention Activities",
+              //                      "monHours": "0:00",
+              //                      "tueHours": "0:00",
+              //                      "wedHours": "0:00",
+              //                      "thuHours": "0:00",
+              //                      "friHours": "0:00",
+              //                      "satHours": "0:00",
+              //                      "sunHours": "0:00"
+              //                  }
+              //               ]
+              //           }
+              //        ]
+              //    }
+              //}];
+
+              //$scope.projectCode = [ {
+              //  projectcodes : "ProjectCode1",
+              //  tasks : [ {
+              //    code : "task1",
+              //    description : "ADM Configuration"
+              //  }, {
+              //    code : "task2",
+              //    description : "Defect prevention Activities"
+              //  } ],
+              //}, {
+              //  projectcodes : "ProjectCode2",
+              //  tasks : [ {
+              //    code : "task1",
+              //    description : "ADM Configuration"
+              //  } ]
+              //}, {
+              //  projectcodes : "ProjectCode3",
+              //  tasks : [ {
+              //    code : "task1",
+              //    description : "ADM Configuration"
+              //  }, {
+              //    code : "task2",
+              //    description : "Defect prevention Activities"
+              //  } ]
+              //}, {
+              //  projectcodes : "ProjectCode4",
+              //  tasks : [ {
+              //    code : "task1",
+              //    description : "ADM Configuration"
+              //  }, {
+              //    code : "task2",
+              //    description : "Defect prevention Activities"
+              //  } ]
+              //} ];
               $scope.example = {
                 value : new Date()
               };
 
-              $scope.date = function () {
+              $scope.datechange = function (e) {
+                  debugger;
+                  var eve = e;
 
                 $scope.weeksArray = [];
                 // $scope.value = new Date();
@@ -378,6 +592,10 @@ app
                       + ' - ' + $filter('date')(new Date(yy6), 'EEE dd MMM'));
                 }
 
+                  //retrival of timesheet for the selected date
+                debugger;
+                $scope.gettimesheetdata();
+
               };
               $scope.show = function() {
                 $scope.visible = true;
@@ -433,68 +651,120 @@ app
               };
               $scope.weekTot = "MonValue + TueValue + WedValue + ThuValue + FriValue + SatValue + SunValue";
 
-              //$scope.timeSheetJSON; //RP
+                //$scope.timeSheetJSON; //RP
+              $scope.currUserTimesheet = $scope.currDefaultUserTimesheet[0];
+              $scope.disableFields = true;
+              //$scope.currUserTimesheet = [];
+              $scope.gettimesheetdata = function () {
+                  debugger;
+                  $scope.disableFields = true;
+                  $scope.currUserTimesheet = $scope.currDefaultUserTimesheet[0];
+                  var selweekno = parseInt(exampleInput.value.split("-W")[1]);
+                  var selmonth = $scope.example.value.getMonth() + 1;
+                  var selyear = parseInt(exampleInput.value.split("-W")[0]);
+
+                  AuthService.getTimeSheet(selweekno, selmonth, selyear).then(function (result) {
+                      debugger;
+                      if ((result != null) && (result != "")) {
+                          alert("Timesheet Successfully Retrieved!!!");
+                          $scope.currUserTimesheet = result;
+                          if (result.status == "submitted")
+                              $scope.disableFields = false;
+                      }
+                      else {
+                          alert("No Timesheet available!!!");
+                      }
+
+                      console.log(result);
+                  });
+              };
+
+              $scope.getpendingtimesheetdata = function () {                  
+
+                  AuthService.getPendingTS().then(function (result) {
+                      debugger;
+                      if ((result != null) && (result != ""))
+                          $scope.currUserTimesheet = result;
+
+                      console.log(result);
+                  });
+              };
+              
+
               $scope.projectsData = [];
               $scope.prjtasksData = [];
               $scope.projectsData1 = [];
 
-              $scope.saveAllValues = function () {
+              $scope.saveTimesheetData = function (val) {
                   //var abc = $scope.ReturnTotalScopeValues();
                   //console.log(abc);
                   //RP
-                  if ($scope.projectCode.length > 0) {
+                  var timesheetStatus = "";
+
+                  if (val == "submit")
+                  {
+                      timesheetStatus = "submitted";
+                  }
+                  else {
+                      timesheetStatus = "saved";
+                  }
+
+
+                  //RP
+                  if ($scope.currUserTimesheet.projects.length > 0) {
                       $scope.projectsData1 = [];
 
-                      for (var i = 0; i < $scope.projectCode.length; i++) {
+                      for (var i = 0; i < $scope.currUserTimesheet.projects.length; i++) {
                           //$scope.projectsData.push({ name: $scope.projectCode[i].projectcodes });
                           //$scope.projectsData1.push(JSON.parse(JSON.stringify({ name: $scope.projectCode[i].projectcodes })));
                           $scope.prjtasksData = [];
-                          for (var j = 0; j < $scope.projectCode[i].tasks.length; j++) {
+                          for (var j = 0; j < $scope.currUserTimesheet.projects[i].tasks.length; j++) {
                               
                               var mon = "#Mon_" + i + "_" + j;
                               if ((angular.element(mon).val() == "") || (!(angular.element(mon).val())))
-                                  mon = 0;
+                                  mon = "0:00";
                               else
                                   mon = angular.element(mon).val();
 
                               var tue = "#Tue_" + i + "_" + j;
                               if ((angular.element(tue).val() == "") || (!(angular.element(tue).val())))
-                                  tue = 0;
+                                  tue = "0:00";
                               else
                                   tue = angular.element(tue).val();
 
                               var wed = "#Wed_" + i + "_" + j;
                               if ((angular.element(wed).val() == "") || (!(angular.element(wed).val())))
-                                  wed = 0;
+                                  wed = "0:00";
                               else
                                   wed = angular.element(wed).val();
 
                               var thu = "#Thu_" + i + "_" + j;
                               if ((angular.element(thu).val() == "") || (!(angular.element(thu).val())))
-                                  thu = 0;
+                                  thu = "0:00";
                               else
                                   thu = angular.element(thu).val();
 
                               var fri = "#Fri_" + i + "_" + j;
                               if ((angular.element(fri).val() == "") || (!(angular.element(fri).val())))
-                                  fri = 0;
+                                  fri = "0:00";
                               else
                                   fri = angular.element(fri).val();
 
                               var sat = "#Sat_" + i + "_" + j;
                               if ((angular.element(sat).val() == "") || (!(angular.element(sat).val())))
-                                  sat = 0;
+                                  sat = "0:00";
                               else
                                   sat = angular.element(sat).val();
 
                               var sun = "#Sun_" + i + "_" + j;
                               if ((angular.element(sun).val() == "") || (!(angular.element(sun).val())))
-                                  sun = 0;
+                                  sun = "0:00";
                               else
                                   sun = angular.element(sun).val();
 
                               $scope.prjtasksData.push({
-                                  name: $scope.projectCode[i].tasks[j].description,
+                                  name: $scope.currUserTimesheet.projects[i].tasks[j].name,
+                                  description: $scope.currUserTimesheet.projects[i].tasks[j].description,
                                   monHours: mon,
                                   tueHours: tue,
                                   wedHours: wed,
@@ -506,7 +776,7 @@ app
                           } //tasks
 
                           $scope.projectsData1.push(JSON.parse(JSON.stringify({
-                              name: $scope.projectCode[i].projectcodes,
+                              name: $scope.currUserTimesheet.projects[i].name,
                               tasks: $scope.prjtasksData
                           })));
 
@@ -522,106 +792,107 @@ app
                               weekno: exampleInput.value.split("-W")[1],
                               month: $scope.example.value.getMonth() + 1,
                               year: exampleInput.value.split("-W")[0],
-                              status: "submitted",
-                              projects: $scope.projectsData1
+                              status: timesheetStatus,
+                              projects: $scope.projectsData1,
+                              comments: angular.element(comment_id).val()
                           }
                       };
                   }
                   //saveTimeSheet(JSON.stringify($scope.timeSheetJSON));
                   AuthService.saveTimeSheet(JSON.stringify($scope.timeSheetJSON)).then(function (msg) {
-
+                      alert("Timesheet Successfully "+timesheetStatus+"!!!");
                       console.log(msg);
                   });
                   //RP
                 
               };
               var minTot;
-              $scope.ReturnTotalScopeValues = function () {
-                  var inputElements = ['input#Mon_', 'input#Tue_', 'input#Wed_', 'input#Thu_', 'input#Fri_', 'input#Sat_', 'input#Sun_'];
-                  angular.forEach($scope.projectCode, function (pc, key1) {
-                      angular.forEach(pc.tasks, function (tsk, key) {
-                          var weekValues = "";
-                          angular.forEach(inputElements, function (ele) {
-                              var elements = $document.find(ele + key1 + '_' + key);
-                              if (elements.length > 0 && elements[0].value !== "") {
-                                  weekValues = weekValues + parseFloat(elements[0].value)
-                                      + ";";
-                                  var aHHMM = elements[0].value.split(":");
+              //$scope.ReturnTotalScopeValues = function () {
+              //    var inputElements = ['input#Mon_', 'input#Tue_', 'input#Wed_', 'input#Thu_', 'input#Fri_', 'input#Sat_', 'input#Sun_'];
+              //    angular.forEach($scope.currUserTimesheet.projects, function (pc, key1) {
+              //        angular.forEach(pc.tasks, function (tsk, key) {
+              //            var weekValues = "";
+              //            angular.forEach(inputElements, function (ele) {
+              //                var elements = $document.find(ele + key1 + '_' + key);
+              //                if (elements.length > 0 && elements[0].value !== "") {
+              //                    weekValues = weekValues + parseFloat(elements[0].value)
+              //                        + ";";
+              //                    var aHHMM = elements[0].value.split(":");
 
-                                  var nMinutes = 0;
-                                  nMinutes = aHHMM[0] * 60;
-                                  nMinutes += Number(aHHMM[1]);
-                                  minTot = minTot + nMinutes;
-                                  var nHours = Math.floor(minTot / 60);
-                                  var nMinutes = minTot % 60;
-                                  weekValues = nHours + ":" + nMinutes;
-                              } else {
-                                  weekValues = weekValues + ";";
-                              }
-                          });
-                          tsk.value = weekValues;
-                      });
-                  });
-                  return $scope.projectCode;
-              };
+              //                    var nMinutes = 0;
+              //                    nMinutes = aHHMM[0] * 60;
+              //                    nMinutes += Number(aHHMM[1]);
+              //                    minTot = minTot + nMinutes;
+              //                    var nHours = Math.floor(minTot / 60);
+              //                    var nMinutes = minTot % 60;
+              //                    weekValues = nHours + ":" + nMinutes;
+              //                } else {
+              //                    weekValues = weekValues + ";";
+              //                }
+              //            });
+              //            tsk.value = weekValues;
+              //        });
+              //    });
+              //    return $scope.$scope.currUserTimesheet.projects;
+              //};
 
-              $scope.ReturnScopeValues = function(elementName, row, col) {
-                var elements = [];
-                var returnValue = 0;
-                var minTot = 0;
-                var i = 0;
-                for (var i = 0; i < row; i++) {
-                  for (var j = 0; j < col; j++) {
-                    elements = $document.find(elementName + i + '_' + j);
-                    if (elements.length > 0) {
-                      angular.forEach(elements, function(ele) {
-                        if (ele.value !== "") {
-                          var aHHMM = ele.value.split(":");
-                          var nMinutes = 0;
-                          nMinutes = aHHMM[0] * 60;
-                          nMinutes += Number(aHHMM[1]);
-                          minTot = minTot + nMinutes;
-                          if (minTot > 1440) {
-                            alert("Value should not excceed 24 hrs");
-                            returnValue = " ";
-                          } else {
-                            var nHours = Math.floor(minTot / 60);
-                            var nMinutes = minTot % 60;
-                            returnValue = nHours + ":" + nMinutes;
-                          }
-                        }
-                      });
-                    }
-                  }
-                }
-                return returnValue;
-              };
+              //$scope.ReturnScopeValues = function(elementName, row, col) {
+              //  var elements = [];
+              //  var returnValue = 0;
+              //  var minTot = 0;
+              //  var i = 0;
+              //  for (var i = 0; i < row; i++) {
+              //    for (var j = 0; j < col; j++) {
+              //      elements = $document.find(elementName + i + '_' + j);
+              //      if (elements.length > 0) {
+              //        angular.forEach(elements, function(ele) {
+              //          if (ele.value !== "") {
+              //            var aHHMM = ele.value.split(":");
+              //            var nMinutes = 0;
+              //            nMinutes = aHHMM[0] * 60;
+              //            nMinutes += Number(aHHMM[1]);
+              //            minTot = minTot + nMinutes;
+              //            if (minTot > 1440) {
+              //              alert("Value should not excceed 24 hrs");
+              //              returnValue = " ";
+              //            } else {
+              //              var nHours = Math.floor(minTot / 60);
+              //              var nMinutes = minTot % 60;
+              //              returnValue = nHours + ":" + nMinutes;
+              //            }
+              //          }
+              //        });
+              //      }
+              //    }
+              //  }
+              //  return returnValue;
+              //};
 
-              $scope.ReturnWeekScopeValues = function(row, col) {
-                var inputElements = [ 'input#Mon_', 'input#Tue_', 'input#Wed_',
-                    'input#Thu_', 'input#Fri_', 'input#Sat_', 'input#Sun_' ];
-                var returnValue = 0;
-                var minTot = 0;
-                angular.forEach(inputElements, function(ele) {
-                  var elements = $document.find(ele + row + '_' + col);
-                  if (elements.length > 0) {
-                    if (elements[0].value !== "") {
+              //$scope.ReturnWeekScopeValues = function(row, col) {
+              //  var inputElements = [ 'input#Mon_', 'input#Tue_', 'input#Wed_',
+              //      'input#Thu_', 'input#Fri_', 'input#Sat_', 'input#Sun_' ];
+              //  var returnValue = 0;
+              //  var minTot = 0;
+              //  angular.forEach(inputElements, function(ele) {
+              //    var elements = $document.find(ele + row + '_' + col);
+              //    if (elements.length > 0) {
+              //      if (elements[0].value !== "") {
 
-                      var aHHMM = elements[0].value.split(":");
+              //        var aHHMM = elements[0].value.split(":");
 
-                      var nMinutes = 0;
-                      nMinutes = aHHMM[0] * 60;
-                      nMinutes += Number(aHHMM[1]);
-                      minTot = minTot + nMinutes;
-                      var nHours = Math.floor(minTot / 60);
-                      var nMinutes = minTot % 60;
-                      returnValue = nHours + ":" + nMinutes;
-                    }
-                  }
-                });
+              //        var nMinutes = 0;
+              //        nMinutes = aHHMM[0] * 60;
+              //        nMinutes += Number(aHHMM[1]);
+              //        minTot = minTot + nMinutes;
+              //        var nHours = Math.floor(minTot / 60);
+              //        var nMinutes = minTot % 60;
+              //        returnValue = nHours + ":" + nMinutes;
+              //      }
+              //    }
+              //  });
 
-                return returnValue;
-              };
+              //  return returnValue;
+              //};
 
             } ]);
 
@@ -833,7 +1104,8 @@ app.service('myservice', function() {
 });
 
 app.filter('selected', function($filter) {
-  return function(projectCode) {
+    return function (projectCode) {
+        debugger;
     var i, len;
     var checkedprojectcode = $filter('filter')(projectCode, {
       checked : true
