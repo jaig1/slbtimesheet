@@ -187,6 +187,7 @@ public TimeSheetResponse savetimesheet(TimeSheetRequest timesheetReq,HttpServlet
 	  savedTimeSheet.setUsername(userName);
 	  savedTimeSheet.setWeekenddatestring(timesheet.getWeekenddatestring());
 	  savedTimeSheet.setWeekstartdatestring(timesheet.getWeekstartdatestring());
+	  savedTimeSheet.setComments(timesheet.getComments());
 	  List<Project> projects=timesheet.getProjects();
 	  List<ProjectModel> projectModels=new ArrayList();
 	  for (Project project : projects) {
@@ -204,6 +205,7 @@ public TimeSheetResponse savetimesheet(TimeSheetRequest timesheetReq,HttpServlet
 			taskModel.setFriHours(task.getFriHours());
 			taskModel.setSatHours(task.getSatHours());
 			taskModel.setSunHours(task.getSunHours());
+			taskModel.setDescription(task.getDescription());
 			taskModels.add(taskModel);
 		}
 		projectModel.setTasks(taskModels);
@@ -295,7 +297,8 @@ public TimeSheetResponse approveorreject(TimeSheetRequest timesheetReq,HttpServl
 	 // System.out.println("resp"+resp);
 	 // TimesheetModel savedTimeSheet=new TimesheetModel();
 	  resp.setStatus(timesheet.getStatus());
-	  
+	  //resp.setComments(comments);
+	  resp.setApprover(userName);
 	  OfyService.ofy().save().entity(resp).now();
 	  response.setTs(resp);
 	  response.setMsg("Timesheet saved successfully");

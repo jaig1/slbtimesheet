@@ -10,6 +10,7 @@ public class Task {
 	private String friHours;
 	private String satHours;
 	private String sunHours;
+	private String description;
 	public String getName() {
 		return name;
 	}
@@ -57,6 +58,12 @@ public class Task {
 	}
 	public void setSunHours(String sunHours) {
 		this.sunHours = sunHours;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

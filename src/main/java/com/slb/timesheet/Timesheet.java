@@ -12,6 +12,9 @@ public class Timesheet {
 	private String weekenddatestring;
 	private int year;
 	private List<Project> projects;
+	private String comments;
+	private String approver;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -59,6 +62,18 @@ public class Timesheet {
 	}
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	public String getApprover() {
+		return approver;
+	}
+	public void setApprover(String approver) {
+		this.approver = approver;
 	}
 	
 	
