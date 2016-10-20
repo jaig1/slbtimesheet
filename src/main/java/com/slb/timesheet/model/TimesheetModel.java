@@ -26,6 +26,8 @@ public class TimesheetModel {
 	private int year;
 	//@Load private List<Ref<ProjectModel>> projects=new ArrayList<Ref<ProjectModel>>();
 	private List<ProjectModel> projects=new ArrayList<ProjectModel>();
+	private String comments;
+	private String approver;
 	public String getUsername() {
 		return username;
 	}
@@ -79,6 +81,18 @@ public class TimesheetModel {
 	}
 	public void setProjects(List<ProjectModel> projects) {
 		this.projects = projects;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	public String getApprover() {
+		return approver;
+	}
+	public void setApprover(String approver) {
+		this.approver = approver;
 	}
 	
 	

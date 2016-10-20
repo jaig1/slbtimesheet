@@ -14,7 +14,13 @@ public class TaskModel {
 	private String friHours;
 	private String satHours;
 	private String sunHours;
-	
+	private String description;
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Long getId() {
 		return id;
 	}
