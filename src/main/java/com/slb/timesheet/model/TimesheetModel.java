@@ -28,6 +28,14 @@ public class TimesheetModel {
 	private List<ProjectModel> projects=new ArrayList<ProjectModel>();
 	private String comments;
 	private String approver;
+	private String approverComments;
+	
+	public String getApproverComments() {
+		return approverComments;
+	}
+	public void setApproverComments(String approverComments) {
+		this.approverComments = approverComments;
+	}
 	public String getUsername() {
 		return username;
 	}

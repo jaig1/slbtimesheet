@@ -297,7 +297,7 @@ public TimeSheetResponse approveorreject(TimeSheetRequest timesheetReq,HttpServl
 	 // System.out.println("resp"+resp);
 	 // TimesheetModel savedTimeSheet=new TimesheetModel();
 	  resp.setStatus(timesheet.getStatus());
-	  //resp.setComments(comments);
+	  resp.setApproverComments(timesheet.getApproverComments());
 	  resp.setApprover(userName);
 	  OfyService.ofy().save().entity(resp).now();
 	  response.setTs(resp);

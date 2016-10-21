@@ -14,7 +14,14 @@ public class Timesheet {
 	private List<Project> projects;
 	private String comments;
 	private String approver;
+	private String approverComments;
 	
+	public String getApproverComments() {
+		return approverComments;
+	}
+	public void setApproverComments(String approverComments) {
+		this.approverComments = approverComments;
+	}
 	public String getUsername() {
 		return username;
 	}
