@@ -1,5 +1,5 @@
 <div ng-controller="ApproverController"> 
-<div ng-init="onLoad()">
+<div ng-init="getpendingtimesheetdata()">
 
 <div>
 <div class="well bghead">
@@ -8,8 +8,15 @@
 </div>
 </div>
 <div class="dash_div">
-<input id="exampleInput" type="week"  name="input" ng-model="example.value"
-required ng-change="date()" />
+<!--<input id="exampleInput" type="week"  name="input" ng-model="example.value"
+required ng-change="date()" />-->
+    <select style="width:auto; height:30px;" ng-model="employeedata" id="empdataid" name="empdata" ng-change="onTimesheetChange($event)">        
+        <option value="" disabled="" selected="">Select Timesheet</option>
+        <!--<option ng-repeat="id in currpendingTimesheets track by $index">Employee: {{currpendingTimesheets[$index].username.substr(0,3)}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</option>-->
+        <option ng-repeat="id in currpendingTimesheets track by $index">Employee: {{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</option>
+    </select>
+    <h6>Selected Employee: {{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</h6>
+
 <div class="wrap">
 <table class="head">
 <tr style="background-color:highlight;height: 40px;">
@@ -31,16 +38,16 @@ required ng-change="date()" />
 <div class="inner_table">
 <table>
 
-<tr  ng-repeat="pc in projectCode" style="font-size:12px">
+<tr  ng-repeat="pc in currSelpendingTimesheet.projects" style="font-size:12px">
 <td style="z-index:-1;width:15%; padding-left: 5px;">
-    {{pc.projectcodes}}
+    {{pc.name}}
 </td>
 
 <td style="width:8%;">
     <table>
         <tr ng-repeat="t in pc.tasks">
             <th></th>
-            <td style="">{{t.code}}</td>
+            <td style="">{{t.name}}</td>
         </tr>
     </table>
 </td>
@@ -59,7 +66,7 @@ required ng-change="date()" />
              <th></th>
             <td style="">
            <!-- <label> {{  t.value.split(';')[0]==="" ? '-' : t.value.split(';')[0] }}</label>-->
-                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[0]" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.monHours" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -70,7 +77,7 @@ required ng-change="date()" />
         <tr ng-repeat="t in pc.tasks">
               <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[1]" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.tueHours" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -81,7 +88,7 @@ required ng-change="date()" />
         <tr ng-repeat="t in pc.tasks">
             <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[2]" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.wedHours" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -92,7 +99,7 @@ required ng-change="date()" />
         <tr ng-repeat="t in pc.tasks">
              <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[3]" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.thuHours" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -103,7 +110,7 @@ required ng-change="date()" />
         <tr ng-repeat="t in pc.tasks">
              <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[4]" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.friHours" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -114,7 +121,7 @@ required ng-change="date()" />
         <tr ng-repeat="t in pc.tasks">
               <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[5]" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.satHours" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -125,7 +132,7 @@ required ng-change="date()" />
         <tr ng-repeat="t in pc.tasks">
              <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.value.split(';')[6]" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.sunHours" readonly="true"/>
             </td>
         </tr>
     </table>
