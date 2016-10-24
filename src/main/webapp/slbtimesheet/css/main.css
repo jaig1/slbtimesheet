@@ -1,7 +1,48 @@
-body{
+/*body{
  font-family: Arial, Helvetica, sans-serif;
  font-size: 12px;
+}*/
+html,
+body {
+	margin:0;
+	padding:0;
+	height:100%;
 }
+#wrapper {
+	min-height:100%;
+	position:relative;
+}
+#header {
+	background:#ededed;
+	padding:10px;
+}
+#content {
+	padding-bottom:100px; /* Height of the footer element */
+}
+#footer {
+	background:#003366 !important;
+	width:100%;
+    color:#ffffff;
+	position:absolute;
+	bottom:0;
+	left:0;
+    font-size: 10px;
+    min-height: 25px;
+    text-align: center; 
+    
+    /*font-size: 10px;
+    background-color:#003366 !important;
+    width:100%; 
+    padding: 5px;
+    padding-left: 28px;
+    color:#ffffff;
+    position : absolute;
+    bottom : 0;
+    margin-top : 0px;
+    margin: auto;
+    overflow: hidden;*/
+}
+
 input{
  
  font-size: 12px !important;
@@ -63,7 +104,7 @@ span.welcome a{
    
 }
 .bgfoot{
-    font-size: 10px;
+    /*font-size: 10px;
     background-color:#003366 !important;
     width:100%; 
     padding: 5px;
@@ -71,7 +112,21 @@ span.welcome a{
     color:#ffffff;
     position : absolute;
     bottom : 0;
-    margin-top : 40px;
+    margin-top : 0px;
+    margin: auto;
+    overflow: hidden;*/
+    
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    background-color: #003466;
+    min-height: 55px;
+    margin-top: 0px;
+    vertical-align: middle;
+    text-align: left;
+    font-size: 9pt;
+    color: #ccc;
+    border-bottom: 6px solid #4f89bf;
 }
 .exampleInput{
     margin-top:50px;
