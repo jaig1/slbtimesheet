@@ -734,7 +734,7 @@ app
                       if ((result != null) && (result != "")) {
                           alert("Timesheet Successfully Retrieved!!!");
                           $scope.currUserTimesheet = result;
-                          if (result.status == "submitted")
+                          if ((result.status == "submitted") || (result.status == "approved"))
                               $scope.disableFields = false;
                       }
                       else {
@@ -1150,6 +1150,7 @@ app.controller("ApproverController", [
 
                  };
 
+                //
 
 
                 //
@@ -1223,6 +1224,44 @@ app.controller("ApproverController", [
                     var yy6 = new Date(xx6);
                     $scope.EndDate = yy6;
                 };
+
+                // save
+
+                $scope.saveApproverData = function (val) {
+                    var timesheetStatus = "";
+                    if (val == "approve") {
+                        timesheetStatus = "approved";
+                    }
+                    else {
+                        timesheetStatus = "rejected";
+                    }
+
+                    //RP
+                    if ($scope.currSelpendingTimesheet.username !="") {
+                        $scope.approvalTimeSheetJSON = {
+                            timesheet: {
+                                username: $scope.currSelpendingTimesheet.username,
+                                weekno: $scope.currSelpendingTimesheet.weekno,
+                                month: $scope.currSelpendingTimesheet.month,
+                                year: $scope.currSelpendingTimesheet.year,
+                                status: timesheetStatus,                                
+                                approverComments: angular.element(approvercomment_id).val()
+                            }
+                        };
+                    }
+                    //saveTimeSheet(JSON.stringify($scope.timeSheetJSON));
+                    AuthService.approveOrReject(JSON.stringify($scope.approvalTimeSheetJSON)).then(function (msg) {
+                        alert("Selected Timesheet's approval status '" + timesheetStatus + "' is saved successfully!!!");
+                        //angular.element(empdataid)[0].selectedIndex = 1;                       
+                        //$scope.employeedata = $scope.currpendingTimesheets[0];
+                        $scope.getpendingtimesheetdata();
+                        console.log(msg);
+                    });
+                    //RP
+
+                };
+
+                //
 
                 //$scope.totalRow = function (valueString) {
                 //    var valueArray = valueString.split(';');
