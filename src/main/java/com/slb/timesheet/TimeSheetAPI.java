@@ -253,7 +253,7 @@ public PendingTSResponse getPendingTS(HttpServletRequest req)
 		userNames[i++]=userModel.getUsername();
 	}
 	  
-	String[] statuses = new String[]{"submitted", "rejected"};
+	String[] statuses = new String[]{"submitted"};   //, "rejected"
 	 List<TimesheetModel> timesheetModels= OfyService.ofy().load().type(TimesheetModel.class).filter("status IN", statuses).filter("username IN",userNames).list(); //.filter("status IN", statuses).filter("username IN",userNames)
 	 response.setSuccess(true);
 	 response.setTimesheets(timesheetModels);
