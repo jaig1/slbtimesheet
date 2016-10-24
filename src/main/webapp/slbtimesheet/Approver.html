@@ -13,9 +13,9 @@ required ng-change="date()" />-->
     <select style="width:auto; height:30px;" ng-model="employeedata" id="empdataid" name="empdata" ng-change="onTimesheetChange($event)">        
         <option value="" disabled="" selected="">Select Timesheet</option>
         <!--<option ng-repeat="id in currpendingTimesheets track by $index">Employee: {{currpendingTimesheets[$index].username.substr(0,3)}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</option>-->
-        <option ng-repeat="id in currpendingTimesheets track by $index">Employee: {{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</option>
+        <option ng-repeat="id in currpendingTimesheets track by $index">{{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</option>
     </select>
-    <h6>Selected Employee: {{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</h6>
+    <h6>Selected Timesheet for: {{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</h6>
 
 <div class="wrap">
 <table class="head">
@@ -38,7 +38,7 @@ required ng-change="date()" />-->
 <div class="inner_table">
 <table>
 
-<tr  ng-repeat="pc in currSelpendingTimesheet.projects" style="font-size:12px">
+<tr  ng-repeat="pc in currSelpendingTimesheet.projects" style="font-size:12px" ng-init="rowIndex = $index">
 <td style="z-index:-1;width:15%; padding-left: 5px;">
     {{pc.name}}
 </td>
@@ -62,11 +62,11 @@ required ng-change="date()" />-->
 <td style="width:4%;">
     <table>
        
-        <tr ng-repeat="t in pc.tasks">
+        <tr ng-repeat="t in pc.tasks"  ng-init="columnIndex = $index">
              <th></th>
             <td style="">
            <!-- <label> {{  t.value.split(';')[0]==="" ? '-' : t.value.split(';')[0] }}</label>-->
-                <input class="textClassDetail" type="text" ng-model="t.monHours" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.monHours" id="Mon_{{rowIndex}}_{{columnIndex}}" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -74,10 +74,10 @@ required ng-change="date()" />-->
 <td style="width:4%;">
     <table>
       
-        <tr ng-repeat="t in pc.tasks">
+        <tr ng-repeat="t in pc.tasks"  ng-init="columnIndex = $index">
               <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.tueHours" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.tueHours" id="Tue_{{rowIndex}}_{{columnIndex}}" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -85,10 +85,10 @@ required ng-change="date()" />-->
 <td style="width:4%;">
     <table>
         
-        <tr ng-repeat="t in pc.tasks">
+        <tr ng-repeat="t in pc.tasks"  ng-init="columnIndex = $index">
             <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.wedHours" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.wedHours" id="Wed_{{rowIndex}}_{{columnIndex}}" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -96,10 +96,10 @@ required ng-change="date()" />-->
 <td style="width:4%;">
     <table>
        
-        <tr ng-repeat="t in pc.tasks">
+        <tr ng-repeat="t in pc.tasks"  ng-init="columnIndex = $index">
              <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.thuHours" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.thuHours" id="Thu_{{rowIndex}}_{{columnIndex}}" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -107,10 +107,10 @@ required ng-change="date()" />-->
 <td style="width:4%;">
     <table>
        
-        <tr ng-repeat="t in pc.tasks">
+        <tr ng-repeat="t in pc.tasks"  ng-init="columnIndex = $index">
              <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.friHours" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.friHours" id="Fri_{{rowIndex}}_{{columnIndex}}" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -118,21 +118,21 @@ required ng-change="date()" />-->
 <td style="width:4%;">
     <table>
       
-        <tr ng-repeat="t in pc.tasks">
+        <tr ng-repeat="t in pc.tasks"  ng-init="columnIndex = $index">
               <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.satHours" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.satHours" id="Sat_{{rowIndex}}_{{columnIndex}}" readonly="true"/>
             </td>
         </tr>
     </table>
 </td>
 <td style="width:4%;">
     <table>
-       
-        <tr ng-repeat="t in pc.tasks">
+        
+        <tr ng-repeat="t in pc.tasks"  ng-init="columnIndex = $index">
              <th></th>
             <td>
-                <input class="textClassDetail" type="text" ng-model="t.sunHours" readonly="true"/>
+                <input class="textClassDetail" type="text" ng-model="t.sunHours" id="Sun_{{rowIndex}}_{{columnIndex}}" readonly="true"/>
             </td>
         </tr>
     </table>
@@ -176,11 +176,11 @@ required ng-change="date()" />-->
 <table style="width: 25%; margin-top: 10px;" >
           <tr>
 <td >  Submitter Comments  </td>
-<td style="padding-left: 10px;"> NA </td>
+<td style="padding-left: 10px;"> <textarea id="comment_id" ng-disabled="true" ng-model="currSelpendingTimesheet.comments" name="txtcomment" cols="20" rows="3" /> </td>
 </tr>
          <tr>
 <td>Approver Comments</td>
-<td style="padding-left: 10px;"><textarea name="txtDescEd" cols="20" rows="3" /></td>
+<td style="padding-left: 10px;"><textarea id="approvercomment_id" name="txtappcomment" cols="20" rows="3" /></td>
 </tr>
        </table>  
  
@@ -188,8 +188,8 @@ required ng-change="date()" />-->
 <table style="margin-top: 10px;text-align: center">
 <tr>
     <td colspan="2"> 
-<button type="submit" class="btn_style" ng-click="approve()">Approve</button>
-<button type="submit" style="margin-left: 25px;"  class="btn_style" ng-click="reject()">Reject</button>
+<button type="submit" class="btn_style" ng-click="saveApproverData('approve')">Approve</button>
+<button type="submit" style="margin-left: 25px;"  class="btn_style"  ng-click="saveApproverData('reject')">Reject</button>
 <button type="submit" style="margin-left: 25px;"  class="btn_style" ng-click="back()">Back</button>
     </td>
  
