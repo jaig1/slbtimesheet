@@ -154,7 +154,11 @@
 
             <tr>
                 <td>Submitter Comments</td>
-                <td style="padding-left: 10px;"><textarea name="txtDescEd" id="comment_id" ng-disabled="!disableFields" ng-model="currUserTimesheet.comments" cols="20" rows="3" /></td>
+                <td style="padding-left: 10px;"><textarea name="txtcomment" id="comment_id" ng-disabled="!disableFields" ng-model="currUserTimesheet.comments" cols="20" rows="3" /></td>
+            </tr>
+            <tr>
+                <td>Approver Comments</td>
+                <td style="padding-left: 10px;"><textarea id="approvercomment_id" ng-model="currUserTimesheet.approverComments" ng-disabled="true" name="txtappcomment" cols="20" rows="3" /></td>
             </tr>
         </table>
         <div style="text-align: left;padding-top: 20px;">
