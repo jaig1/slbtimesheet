@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('myTimeSheetApp', [ 'ngRoute' ]);
+var app = angular.module('myTimeSheetApp', ['ngRoute', 'ngCookies']);
 app.constant("AUTH_EVENTS", {
   notAuthenticated : 'auth-not-authenticated'
 })
@@ -100,7 +100,7 @@ app.service('AuthService', function($q, $http, API_ENDPOINT) {
   var getPendingTS = function () {
       return $q(function (resolve, reject) {
           $http.get(API_ENDPOINT.url + '/getPendingTS').then(function (result) {
-
+              debugger;
               if (result.data.success) {
                   resolve(result.data.timesheets);
               } else {
@@ -119,9 +119,9 @@ app.service('AuthService', function($q, $http, API_ENDPOINT) {
             console.log(result);
             if (result.data.success) {
               storeUserCredentials(result.data.token, result.data.role);
-              resolve(result.data.msg);
+              resolve(result.data.user);
             } else {
-              reject(result.data.msg);
+              reject(result.data);
             }
           });
     });
@@ -179,14 +179,19 @@ app.config([ '$routeProvider', function($routeProvider) {
 
 app.controller('LoginController', [
     '$scope',
+    '$cookies',
+    '$cookieStore',
     '$rootScope',
     '$http',
     '$location',
     '$window',
     'myservice',
     'AuthService',
-    function($scope, $rootScope, $http, $location, $window, myservice,
+
+    function ($scope, $cookies, $cookieStore, $rootScope, $http, $location, $window, myservice,
         AuthService) {
+
+
 
       $scope.username = myservice.userName;
 
@@ -210,7 +215,8 @@ app.controller('LoginController', [
         });
       };
       $scope.user = [];
-      $scope.validate = function(username, pwd) {
+      $scope.validate = function (username, pwd) {
+          debugger;
         $scope.user = {
           username : username,
           password : pwd
@@ -223,14 +229,18 @@ app.controller('LoginController', [
 
           $rootScope.employeeId = username;
           $rootScope.user_role = AuthService.getRole();
-          myservice.userName = username;
+            //myservice.userName = username;
+          myservice.userName = msg.username;
+          myservice.managerName = msg.approver;
           if ($rootScope.user_role == "manager") {
             myservice.isManager = true;
-            myservice.managerName = "DM@infosys.com";
+            //myservice.managerName = "DM@infosys.com";
           } else {
             myservice.isManager = false;
-            myservice.managerName = "Manager@infosys.com";
+            //myservice.managerName = "Manager@infosys.com";
           }
+          $cookies.myservice = myservice;
+          $cookieStore.put('myservice', myservice);
 
           if ($rootScope.employeeId !== "") {
             $window.location.href = "#/home";
@@ -239,7 +249,8 @@ app.controller('LoginController', [
             $location.path("#/");
           }
         }, function(errMsg) {
-          console.log("Login Failed ");
+            console.log("Login Failed ");
+            alert("Invalid Email address or Password. Please correct and try login again.");
         });
       };
     } ]);
@@ -257,6 +268,8 @@ app
         "DashboardController",
         [
             '$scope',
+            '$cookies',
+    '$cookieStore',
             '$location',
             '$window',
             'myservice',
@@ -264,15 +277,38 @@ app
             '$document',
             '$filter',
             'AuthService',
-            function($scope, $location, $window, myservice, filterFilter,
+            function($scope, $cookies, $cookieStore,$location, $window, myservice, filterFilter,
                 $document, $filter, AuthService) {
 
+                myservice = $cookieStore.get('myservice');
               $scope.visible = false;
               $scope.approver = function() {
                 myservice.isApprove = true;
                 myservice.isReject = true;
                 $window.location.href = "#/approver";
               };
+
+              $scope.logout = function () {
+                  //alert($cookieStore.get('myservice'));
+                  $cookieStore.remove("myservice");
+                  //alert($cookieStore.get('myservice'));
+              };
+
+              $scope.pendingTSCount = 0;
+
+              $scope.getpendingtimesheetCount = function () {
+                  $scope.pendingTSCount = 0;
+                  debugger;
+                  AuthService.getPendingTS().then(function (result) {
+                      debugger;
+                      if ((result != null) && (result != ""))
+                          $scope.pendingTSCount = result.length;
+
+                      console.log(result);
+                  });
+                  
+              };
+
 
               // $scope.reject = function()
               // {
@@ -665,7 +701,9 @@ app
               $scope.hide = function() {
                 $scope.visible = false;
               };
-
+              debugger;
+              //console.log($cookieStore.get('myobj'));
+                //$scope.welcomeUserMsg = $cookieStore.get('myobj');//myservice.userName;
               $scope.welcomeUserMsg = myservice.userName;
               $scope.managerName = myservice.managerName;
               $scope.myservice = myservice;
@@ -964,6 +1002,8 @@ app
 
 app.controller("ApproverController", [
     '$scope',
+    '$cookies',
+    '$cookieStore',
             '$location',
             '$window',
             'myservice',
@@ -971,11 +1011,16 @@ app.controller("ApproverController", [
             '$document',
             '$filter',
             'AuthService',
-            function ($scope, $location, $window, myservice, filterFilter,
+            function ($scope, $cookies, $cookieStore,$location, $window, myservice, filterFilter,
                 $document, $filter, AuthService) {
 
+                myservice = $cookieStore.get('myservice');
 
-
+                $scope.logout = function () {
+                    //alert($cookieStore.get('myservice'));
+                    $cookieStore.remove("myservice");
+                    //alert($cookieStore.get('myservice'));
+                };
 
                 $scope.back = function () {
                     $window.location.href = "#/home";
