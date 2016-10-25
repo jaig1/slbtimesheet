@@ -4,7 +4,7 @@
 <div>
 <div class="well bghead">
     <img src="images/logo_schlumberger.gif" alt=""/> <span class="timesheet">| <span style="padding-left: 10px;">TimeSheet Dashboard</span></span>
-<span class="welcome"> Welcome,  <label ng-model="welcomeUserMsg" >{{welcomeUserMsg}}</label> <a href="#/login">Logout</a></span>
+<span class="welcome"> Welcome,  <label ng-model="welcomeUserMsg" >{{welcomeUserMsg}}</label><br/><a href="#/login"  ng-click="logout()">Logout</a></span>
 </div>
 </div>
 <div class="dash_div">
@@ -15,8 +15,9 @@ required ng-change="date()" />-->
         <!--<option ng-repeat="id in currpendingTimesheets track by $index">Employee: {{currpendingTimesheets[$index].username.substr(0,3)}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</option>-->
         <option ng-repeat="id in currpendingTimesheets track by $index">{{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</option>
     </select>
-    <h6>Selected Timesheet for: {{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</h6>
-
+    <br/> <br/>
+    <span>Selected Timesheet for: {{currpendingTimesheets[$index].username}} / WeekNo: {{currpendingTimesheets[$index].weekno}}/ Year: {{currpendingTimesheets[$index].year}}</span>
+    <a href="#/home" style="float:right; font-weight: bold;">Timesheet submission</a>
 <div class="wrap">
 <table class="head">
 <tr style="background-color:highlight;height: 40px;">
@@ -173,14 +174,15 @@ required ng-change="date()" />-->
 
 
 <div>
-<table style="width: 25%; margin-top: 10px;" >
+<table id="commentTable">
           <tr>
-<td >  Submitter Comments  </td>
-<td style="padding-left: 10px;"> <textarea id="comment_id" ng-disabled="true" ng-model="currSelpendingTimesheet.comments" name="txtcomment" cols="20" rows="3" /> </td>
+<td style="width:150px;">  Submitter Comments  </td>
+<td style="padding-left: 10px;"> <textarea id="comment_id" ng-disabled="true" ng-model="currSelpendingTimesheet.comments" name="txtcomment" cols="40" rows="3" /> </td>
+ <td style="text-align: right; vertical-align: text-top;"><span>Status : <input id="timesheetStatusid" ng-disabled="true" type="text" name="timesheetStatus" ng-model="currSelpendingTimesheet.status" style="color:black;" /></span></td>
 </tr>
          <tr>
 <td>Approver Comments</td>
-<td style="padding-left: 10px;"><textarea id="approvercomment_id" name="txtappcomment" cols="20" rows="3" /></td>
+<td style="padding-left: 10px;"><textarea id="approvercomment_id" name="txtappcomment" cols="40" rows="3" /></td>
 </tr>
        </table>  
  
@@ -190,7 +192,7 @@ required ng-change="date()" />-->
     <td colspan="2"> 
 <button type="submit" class="btn_style" ng-click="saveApproverData('approve')">Approve</button>
 <button type="submit" style="margin-left: 25px;"  class="btn_style"  ng-click="saveApproverData('reject')">Reject</button>
-<button type="submit" style="margin-left: 25px;"  class="btn_style" ng-click="back()">Back</button>
+<!--<button type="submit" style="margin-left: 25px;"  class="btn_style" ng-click="back()">Back</button>-->
     </td>
  
 </tr>
