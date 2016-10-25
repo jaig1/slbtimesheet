@@ -1,10 +1,13 @@
 package com.slb.timesheet;
 
+import com.slb.timesheet.model.UserModel;
+
 public class AuthenticationResponse {
 	private boolean success;
 	private String msg;
 	private String token;
 	private String role;
+	private UserModel user;
 	public boolean isSuccess() {
 		return success;
 	}
@@ -28,6 +31,12 @@ public class AuthenticationResponse {
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public UserModel getUser() {
+		return user;
+	}
+	public void setUser(UserModel user) {
+		this.user = user;
 	}
 	
 	
