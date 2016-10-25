@@ -88,6 +88,8 @@ public AuthenticationResponse authenticate(AuthenticateRequest authenticateReque
 			  resp.setRole("regular");
 		  }
 		  resp.setToken(authenticateRequest.getUsername());
+		  user.setPassword(null);
+		  resp.setUser(user);
 		  return resp;
 	}
 	else
