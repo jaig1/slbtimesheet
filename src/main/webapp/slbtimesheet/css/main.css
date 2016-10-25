@@ -26,9 +26,11 @@ body {
 	position:absolute;
 	bottom:0;
 	left:0;
-    font-size: 10px;
-    min-height: 25px;
-    text-align: center; 
+    font-size: 12px;
+    /*min-height: 25px;*/
+    text-align: center;
+    vertical-align: middle !important;
+    height:18px;
     
     /*font-size: 10px;
     background-color:#003366 !important;
@@ -60,7 +62,7 @@ input{
     color: #ffffff;
     font-family: arial;
     font-size: 12px;
-    width: 80px;
+    width: 150px;
     padding: 5px;
 }
 .btn_div{
@@ -101,6 +103,7 @@ button.hover_ex:hover{
 }
 span.welcome a{
     color:#ffffff;
+    float:right;
    
 }
 .bgfoot{
@@ -192,13 +195,24 @@ table tr td {
     width:100%;
 }
 
+#commentTable{
+    width: 100%;
+    margin-top: 10px;
+}
+#commentTable tr td {
+    
+    text-align: left;
+    width:auto;
+}
+
 table.head tr td {
     background: #eee;
 }
 
 .inner_table {
-    height: 225px;
-    overflow-y: overlay;
+    height: auto;
+    /*height: 225px;
+    overflow-y: overlay;*/
  }
  @media all and (-ms-high-contrast:none){
    .inner_table {  
