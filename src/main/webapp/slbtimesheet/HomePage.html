@@ -1,19 +1,21 @@
 <div>
     <div class="well bghead">
         <img src="images/logo_schlumberger.gif" alt="" /> <span class="timesheet">| <span style="padding-left: 10px;">TimeSheet Dashboard</span></span>
-        <span class="welcome"> Welcome,  <label ng-model="welcomeUserMsg">{{welcomeUserMsg}}</label> <a href="#/login">Logout</a></span>
+        <span class="welcome"> Welcome,  <label ng-model="welcomeUserMsg">{{welcomeUserMsg}}</label><br/><a href="#/login" ng-click="logout()">Logout</a></span>
+        
     </div>
    
     <div class="dash_div">
         <div ng-init="myFunction()"></div>
         <div style="float:right; margin-top: -11px;" ng-show="enableButtons">
             Pending for Approval :
-            <a ng-click="approver()" style="cursor: pointer; text-decoration: none; font-weight: bold; align-content: ">Approve/Reject</a>
+            <a ng-click="approver()" ng-init="getpendingtimesheetCount()" style="cursor: pointer; text-decoration: none; font-weight: bold; align-content: ">Approve/Reject [{{pendingTSCount}}]</a>
         </div>
         <br />
         <input id="exampleInput" type="week" name="input" ng-model="m_date"
                required ng-change="dateChange()" />
-        <h4 class="apprv">Approver: <input id="Approverid" class="app_in" type="text" name="input" ng-model="managerName" style="color:black;" readonly="true" /></h4>
+        <h4 class="apprv" style="text-align: right;"><span>Approver: <input id="Approverid" class="app_in" type="text" name="apprname" ng-model="managerName" style="padding-right:10px;" /></span></h4>
+        <!--<span class="apprv" style="padding-right: 22px; width:auto;">Approver: <input id="Approverid" class="app_in" type="text" name="appname" ng-model="managerName" style="color:black;width:auto;"  /></span>-->
         <div class="wrap">
             <table class="head">
                 <tr style="background-color:highlight;height: 40px;">
@@ -150,15 +152,16 @@
                 <th style="width:4%;"><h6><input class="textClass" type="text" ng-disabled="true" /></h6>
             </table>
         </div>
-        <table style="width: 25%; margin-top: 10px;">
+        <table id="commentTable">
 
             <tr>
-                <td>Submitter Comments</td>
-                <td style="padding-left: 10px;"><textarea name="txtcomment" id="comment_id" ng-disabled="!disableFields" ng-model="currUserTimesheet.comments" cols="20" rows="3" /></td>
+                <td style="width:150px;">Submitter Comments</td>
+                <td style="padding-left: 10px;"><textarea name="txtcomment" id="comment_id" ng-disabled="!disableFields" ng-model="currUserTimesheet.comments" cols="40" rows="3" /></td>
+                <td style="text-align: right; vertical-align: text-top;"><span>Status : <input id="timesheetStatusid"  ng-disabled="true" type="text" name="timesheetStatus" ng-model="currUserTimesheet.status" style="color:black;"/></span></td>
             </tr>
             <tr>
                 <td>Approver Comments</td>
-                <td style="padding-left: 10px;"><textarea id="approvercomment_id" ng-model="currUserTimesheet.approverComments" ng-disabled="true" name="txtappcomment" cols="20" rows="3" /></td>
+                <td style="padding-left: 10px;"><textarea id="approvercomment_id" ng-model="currUserTimesheet.approverComments" ng-disabled="true" name="txtappcomment" cols="40" rows="3" /></td>
             </tr>
         </table>
         <div style="text-align: left;padding-top: 20px;">
