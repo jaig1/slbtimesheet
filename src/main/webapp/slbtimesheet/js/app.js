@@ -304,7 +304,7 @@ app
                       if ((result != null) && (result != ""))
                           $scope.pendingTSCount = result.length;
 
-                      console.log(result);
+                      //console.log(result);
                   });
                   
               };
@@ -326,6 +326,8 @@ app
                       month: 0,
                       year: "",
                       status: "",
+                      comments: "",
+                      approvercomments: "",
                       projects: [
                          {
                              name: "ProjectCode1",
@@ -776,10 +778,11 @@ app
                               $scope.disableFields = false;
                       }
                       else {
-                          alert("No Timesheet available!!!");
+                          $scope.currUserTimesheet = $scope.currDefaultUserTimesheet[0];
+                          alert("No Timesheet available!!!");                          
                       }
 
-                      console.log(result);
+                      //console.log(result);
                   });
               };
 
@@ -889,9 +892,10 @@ app
 
 
                       //$scope.projectsData.push(JSON.parse(JSON.stringify($scope.cC)));
-
+                      debugger;
                       $scope.timeSheetJSON = {
-                          timesheet: {
+
+                          timesheet: {                              
                               username: $scope.welcomeUserMsg,
                               weekno: exampleInput.value.split("-W")[1],
                               month: $scope.m_date.getMonth() + 1,
@@ -904,7 +908,10 @@ app
                   }
                   //saveTimeSheet(JSON.stringify($scope.timeSheetJSON));
                   AuthService.saveTimeSheet(JSON.stringify($scope.timeSheetJSON)).then(function (msg) {
-                      alert("Timesheet Successfully "+timesheetStatus+"!!!");
+                      alert("Timesheet Successfully " + timesheetStatus + "!!!");
+                      $scope.currUserTimesheet = msg.ts;
+                      if ((msg.ts.status == "submitted") || (msg.ts.status == "approved"))
+                          $scope.disableFields = false;
                       console.log(msg);
                   });
                   //RP
@@ -1001,6 +1008,7 @@ app
             } ]);
 
 app.controller("ApproverController", [
+    //'jquery',
     '$scope',
     '$cookies',
     '$cookieStore',
@@ -1011,11 +1019,15 @@ app.controller("ApproverController", [
             '$document',
             '$filter',
             'AuthService',
-            function ($scope, $cookies, $cookieStore,$location, $window, myservice, filterFilter,
+            function (
+                //$,
+                $scope, $cookies, $cookieStore, $location, $window, myservice, filterFilter,
                 $document, $filter, AuthService) {
 
                 myservice = $cookieStore.get('myservice');
-
+                //angular.element(empdataid)[0].selectedIndex = 1;
+                //$('#empdataid :nth-child(1)').prop('selected', true);
+                $('#empdataid :nth-child(2)').prop('selected', true);
                 $scope.logout = function () {
                     //alert($cookieStore.get('myservice'));
                     $cookieStore.remove("myservice");
@@ -1047,11 +1059,13 @@ app.controller("ApproverController", [
                         console.log(result);
                     });
                     debugger;
+                    //angular.element(empdataid)[0].selectedIndex = 1;
                     var testweekdate = getDateRangeOfWeek($scope.WeekSelnumber);
                     var wkstartdate = new Date(testweekdate.split(" to ")[0]);
                     $scope.m_date = wkstartdate;
                     $scope.weeksetting();
                     debugger;
+                    //angular.element(empdataid)[0].selectedIndex = 1;
                 };
 
                 //$scope.currSelpendingTimesheet = [];
@@ -1061,6 +1075,8 @@ app.controller("ApproverController", [
                       month: 0,
                       year: "",
                       status: "",
+                      comments: "",
+                     approvercomments:"",
                       projects: [
                          {
                              name: "ProjectCode1",
@@ -1296,10 +1312,22 @@ app.controller("ApproverController", [
                     }
                     //saveTimeSheet(JSON.stringify($scope.timeSheetJSON));
                     AuthService.approveOrReject(JSON.stringify($scope.approvalTimeSheetJSON)).then(function (msg) {
+                        
                         alert("Selected Timesheet's approval status '" + timesheetStatus + "' is saved successfully!!!");
                         //angular.element(empdataid)[0].selectedIndex = 1;                       
                         //$scope.employeedata = $scope.currpendingTimesheets[0];
+                        //$scope.currSelpendingTimesheet = $scope.currDefaultUserTimesheet[0];
+                        debugger;
+                        //$("#empdataid").prop('selectedIndex', 1);
+                        //angular.element(empdataid)[0].selectedIndex = 1;
+                        
+                        debugger;
+                        $scope.currSelpendingTimesheet = $scope.currDefaultUserTimesheet[0];
                         $scope.getpendingtimesheetdata();
+                        //angular.element(empdataid)[0].selectedIndex = 1;
+                        $scope.apply();
+                        
+
                         console.log(msg);
                     });
                     //RP
@@ -1308,18 +1336,87 @@ app.controller("ApproverController", [
 
                 //
 
-                //$scope.totalRow = function (valueString) {
-                //    var valueArray = valueString.split(';');
-                //    var totalValue = 0;
+                app.filter('removecolon', function () {
+                    return function (input) {
+                        if (input) {
+                            return input.replace(':', '.');
+                        }
+                    }
+                });
 
-                //    for (var i = 0; i < valueArray.length; i++) {
-                //        if (valueArray[i] === "") {
-                //            valueArray[i] = 0;
-                //        }
-                //        totalValue = parseFloat(totalValue) + parseFloat(valueArray[i]);
-                //    }
-                //    return totalValue;
-                //};
+
+                $scope.totalRow = function (monHours, tueHours, wedHours, thuHours, friHours, satHours, sunHours) {
+                    //var valueArray = valueString.split(';');
+                    //var totalValue = 0;
+
+                    //for (var i = 0; i < valueArray.length; i++) {
+                    //    if (valueArray[i] === "") {
+                    //        valueArray[i] = 0;
+                    //    }
+                    //    totalValue = parseFloat(totalValue) + parseFloat(valueArray[i]);
+                    //}
+                    //return totalValue;
+                    //
+                    debugger;
+                    var totalValue = 0;
+
+                    
+                    if (monHours == "")
+                        monHours = 0;
+                    else
+                        monHours = monHours.replace(':', '.');
+
+
+                    if (tueHours == "")
+                        tueHours = 0;
+                    else
+                        tueHours = tueHours.replace(':', '.');
+
+                    if (wedHours == "")
+                        wedHours = 0;
+                    else
+                        wedHours = wedHours.replace(':', '.');
+
+                    if (thuHours == "")
+                        thuHours = 0;
+                    else
+                        thuHours = thuHours.replace(':', '.');
+
+                    if (friHours == "")
+                        friHours = 0;
+                    else
+                        friHours = friHours.replace(':', '.');
+
+                    if (satHours == "")
+                        satHours = 0;
+                    else
+                        satHours = satHours.replace(':', '.');
+
+                    if (sunHours == "")
+                        sunHours = 0;
+                    else
+                        sunHours = sunHours.replace(':', '.');
+
+                    
+                    totalValue = parseFloat(monHours) + parseFloat(tueHours) + parseFloat(wedHours) + parseFloat(thuHours) + parseFloat(friHours) + parseFloat(satHours) + parseFloat(sunHours);
+                    //console.log(totalValue);
+                    ////totalValue = "1.1";
+                    //console.log(parseFloat((Math.round(totalValue * 100) / 100).toFixed(2))); 
+                    //totalValue = parseFloat((Math.round(totalValue * 100) / 100).toFixed(2));
+                    totalValue = totalValue.toFixed(2);
+
+
+                    var totalvalstr = "";
+                    totalvalstr = totalValue;
+                    if (totalvalstr == "0")
+                        totalvalstr = "0:00";
+                    else
+                        totalvalstr = totalvalstr.replace('.', ':');
+                    console.log(totalvalstr);
+
+                    return totalvalstr;
+
+                };
                 //$scope.finalRows = function (projectCode) {
                 //    var taskValues = [];
                 //    angular.forEach(projectCode, function (tasks) {
